@@ -1,7 +1,8 @@
 package dari.entity;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -11,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 public class Surveillance implements Serializable{
@@ -20,6 +23,8 @@ public class Surveillance implements Serializable{
 	@Id
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	private Long idSurveillance ; 
+	
+	private String providerName;
 	
 	private String capteur;
 	
@@ -31,35 +36,44 @@ public class Surveillance implements Serializable{
 	
 	private double price;
 	
-	private boolean availability;
+	private int jaime;
+	
+	private int jaimeplus;
+	
+	private CategorySurveillance categorySurveillance;
+		
+	@Temporal(TemporalType.DATE)
+	private Date dateAdd;
 	
 	@ManyToOne
-	private SurveillanceOfficer agent;
+	private SurveillanceOfficer surveillanceOfficer;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy="surveillance")
-	private Collection<SurveillanceNotice> SurveillanceNotices;
+	private List<SurveillanceNotice> SurveillanceNotices;
 	
-	@ManyToMany(cascade = CascadeType.ALL)
-	private Collection<SurveillanceCommand> SurveillanceCommands;
 	
-	public Surveillance() {
-		super();
-	}
-
-	public Surveillance(Long idSurveillance, String capteur, int resolution, int indiceProtection, int porteeInfrarouge,
-			double price, boolean availability, SurveillanceOfficer agent,
-			Collection<SurveillanceNotice> surveillanceNotices, Collection<SurveillanceCommand> surveillanceCommands) {
+	@OneToMany(cascade = CascadeType.ALL, mappedBy="surveillance")
+	private List<LigneCommand> LigneCommands;
+	
+	public Surveillance(Long idSurveillance, String providerName, String capteur, int resolution, int indiceProtection,
+			int porteeInfrarouge, double price, int like, int deslike, CategorySurveillance categorySurveillance,
+			Date dateAdd) {
 		super();
 		this.idSurveillance = idSurveillance;
+		this.providerName = providerName;
 		this.capteur = capteur;
 		this.resolution = resolution;
 		this.indiceProtection = indiceProtection;
 		this.porteeInfrarouge = porteeInfrarouge;
 		this.price = price;
-		this.availability = availability;
-		this.agent = agent;
-		SurveillanceNotices = surveillanceNotices;
-		SurveillanceCommands = surveillanceCommands;
+		this.jaime = like;
+		this.jaimeplus = deslike;
+		this.categorySurveillance = categorySurveillance;
+		this.dateAdd = dateAdd;
+	}
+	
+	public Surveillance() {
+		super();
 	}
 
 	public Long getIdSurveillance() {
@@ -68,6 +82,14 @@ public class Surveillance implements Serializable{
 
 	public void setIdSurveillance(Long idSurveillance) {
 		this.idSurveillance = idSurveillance;
+	}
+
+	public String getProviderName() {
+		return providerName;
+	}
+
+	public void setProviderName(String providerName) {
+		this.providerName = providerName;
 	}
 
 	public String getCapteur() {
@@ -110,37 +132,55 @@ public class Surveillance implements Serializable{
 		this.price = price;
 	}
 
-	public boolean isAvailability() {
-		return availability;
+	public int getLike() {
+		return jaime;
 	}
 
-	public void setAvailability(boolean availability) {
-		this.availability = availability;
+	public void setLike(int like) {
+		this.jaime = like;
 	}
 
-	public SurveillanceOfficer getAgent() {
-		return agent;
+	public int getDeslike() {
+		return jaimeplus;
 	}
 
-	public void setAgent(SurveillanceOfficer agent) {
-		this.agent = agent;
+	public void setDeslike(int deslike) {
+		this.jaimeplus = deslike;
 	}
 
-	public Collection<SurveillanceNotice> getSurveillanceNotices() {
-		return SurveillanceNotices;
+	public CategorySurveillance getCategorySurveillance() {
+		return categorySurveillance;
 	}
 
-	public void setSurveillanceNotices(Collection<SurveillanceNotice> surveillanceNotices) {
-		SurveillanceNotices = surveillanceNotices;
+	public void setCategorySurveillance(CategorySurveillance categorySurveillance) {
+		this.categorySurveillance = categorySurveillance;
 	}
 
-	public Collection<SurveillanceCommand> getSurveillanceCommands() {
-		return SurveillanceCommands;
+	public Date getDateAdd() {
+		return dateAdd;
 	}
 
-	public void setSurveillanceCommands(Collection<SurveillanceCommand> surveillanceCommands) {
-		SurveillanceCommands = surveillanceCommands;
+	public void setDateAdd(Date dateAdd) {
+		this.dateAdd = dateAdd;
 	}
+
+	public void setSurveillanceOfficer(SurveillanceOfficer surveillanceOfficer) {
+		this.surveillanceOfficer = surveillanceOfficer;
+	}
+	
+	
+	/*public List<LigneCommand> getLigneCommands() {
+		return LigneCommands;
+	}*/
+
+	
+	
+	
+
+
+	
+	
+	
 	
 	
 

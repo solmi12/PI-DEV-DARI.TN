@@ -3,6 +3,7 @@ package dari.entity;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -11,8 +12,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class SurveillanceCommand implements Serializable{
@@ -26,27 +30,41 @@ public class SurveillanceCommand implements Serializable{
 	
 	private double priceCommand;
 	
-	private boolean stateCommand;
+	private double finalPriceCommand;
+	
+	private double discountprice;
+	
+	private String fournisseurCommand;
+	
+	private String description;
+	
+	private StateCommand stateCommand;
+	
+	private boolean staterequest;
+	
+	private String codeCommande;
+	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy="surveillanceCommand")
+	private List<LigneCommand> ligneCommands ;
 	
 	@ManyToOne
-	private Client client;
-	
-	@ManyToMany(cascade = CascadeType.ALL , mappedBy="SurveillanceCommands")
-	private Collection<Surveillance> Surveillances;
+	private Client client ;
 	
 	public SurveillanceCommand() {
 		super();
 	}
 
-	public SurveillanceCommand(Long idCommand, Date dateCammand, double priceCommand, boolean stateCommand,
-			Client client, Collection<Surveillance> surveillances) {
+	public SurveillanceCommand(Long idCommand, Date dateCammand, double priceCommand, double finalPriceCommand,
+			String fournisseurCommand, String description, StateCommand stateCommand, String codeCommande) {
 		super();
 		this.idCommand = idCommand;
 		this.dateCammand = dateCammand;
 		this.priceCommand = priceCommand;
+		this.finalPriceCommand = finalPriceCommand;
+		this.fournisseurCommand = fournisseurCommand;
+		this.description = description;
 		this.stateCommand = stateCommand;
-		this.client = client;
-		Surveillances = surveillances;
+		this.codeCommande = codeCommande;
 	}
 
 	public Long getIdCommand() {
@@ -72,30 +90,82 @@ public class SurveillanceCommand implements Serializable{
 	public void setPriceCommand(double priceCommand) {
 		this.priceCommand = priceCommand;
 	}
+	
+	public double getFinalPriceCommand() {
+		return finalPriceCommand;
+	}
 
-	public boolean isStateCommand() {
+	public void setFinalPriceCommand(double finalPriceCommand) {
+		this.finalPriceCommand = finalPriceCommand;
+	}
+	
+	public double getDiscountprice() {
+		return discountprice;
+	}
+
+	public void setDiscountprice(double discountprice) {
+		this.discountprice = discountprice;
+	}
+
+	public StateCommand getStateCommand() {
 		return stateCommand;
 	}
 
-	public void setStateCommand(boolean stateCommand) {
+	public void setStateCommand(StateCommand stateCommand) {
 		this.stateCommand = stateCommand;
 	}
-
-	public Client getClient() {
-		return client;
+	
+	@JsonIgnore
+	public List<LigneCommand> getLigneCommands() {
+		return ligneCommands;
 	}
+
+	public boolean isStaterequest() {
+		return staterequest;
+	}
+
+	public void setStaterequest(boolean staterequest) {
+		this.staterequest = staterequest;
+	}
+
+	public void setLigneCommands(List<LigneCommand> ligneCommands) {
+		this.ligneCommands = ligneCommands;
+	}
+
+	/*public Client getClient() {
+		return client;
+	}*/
 
 	public void setClient(Client client) {
 		this.client = client;
 	}
 
-	public Collection<Surveillance> getSurveillances() {
-		return Surveillances;
+	public String getFournisseurCommand() {
+		return fournisseurCommand;
 	}
 
-	public void setSurveillances(Collection<Surveillance> surveillances) {
-		Surveillances = surveillances;
+	public void setFournisseurCommand(String fournisseurCommand) {
+		this.fournisseurCommand = fournisseurCommand;
 	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getCodeCommande() {
+		return codeCommande;
+	}
+
+	public void setCodeCommande(String codeCommande) {
+		this.codeCommande = codeCommande;
+	}
+	
+	
+	
 	
 	
 	

@@ -1,15 +1,12 @@
 package dari.entity;
 
 import java.io.Serializable;
-import java.util.Date;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+
 
 @Entity
 public class SurveillanceNotice implements Serializable{
@@ -20,9 +17,6 @@ public class SurveillanceNotice implements Serializable{
 	
 	private String description;
 	
-	@Temporal(TemporalType.DATE)
-	private Date dateNotice;
-	
 	@ManyToOne
 	private Surveillance surveillance;
 	
@@ -30,12 +24,10 @@ public class SurveillanceNotice implements Serializable{
 		super();
 	}
 
-	public SurveillanceNotice(Long idNotice, String description, Date dateNotice, Surveillance surveillance) {
+	public SurveillanceNotice(Long idNotice, String description) {
 		super();
 		this.idNotice = idNotice;
 		this.description = description;
-		this.dateNotice = dateNotice;
-		this.surveillance = surveillance;
 	}
 
 	public Long getIdNotice() {
@@ -52,18 +44,6 @@ public class SurveillanceNotice implements Serializable{
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public Date getDateNotice() {
-		return dateNotice;
-	}
-
-	public void setDateNotice(Date dateNotice) {
-		this.dateNotice = dateNotice;
-	}
-
-	public Surveillance getSurveillance() {
-		return surveillance;
 	}
 
 	public void setSurveillance(Surveillance surveillance) {

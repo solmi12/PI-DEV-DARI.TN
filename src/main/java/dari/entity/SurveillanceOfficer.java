@@ -1,17 +1,14 @@
 package dari.entity;
 
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.Date;
-
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+
 
 @Entity
 public class SurveillanceOfficer implements Serializable{
@@ -20,35 +17,38 @@ public class SurveillanceOfficer implements Serializable{
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	private Long idSurveillanceOfficer;
 	
-	private String firstName;
+	private String userName;
 	
-	private String lastName;
-	
-	private String password;
-	
-	@Temporal(TemporalType.DATE)
-	private Date dateActivation;
-	
-	private boolean state;
-	
-	@OneToMany(cascade = CascadeType.ALL, mappedBy="agent")
-	private Collection<Surveillance> Surveillances;
+	@OneToMany(cascade = CascadeType.ALL, mappedBy="surveillanceOfficer")
+	private List<Surveillance> Surveillances;
 
 	public SurveillanceOfficer() {
 		super();
 	}
 
-	public SurveillanceOfficer(Long idSurveillanceOfficer, String firstName, String lastName, String password,
-			Date dateActivation, boolean state, Collection<Surveillance> surveillances) {
+
+	public SurveillanceOfficer(Long idSurveillanceOfficer, String userName) {
 		super();
 		this.idSurveillanceOfficer = idSurveillanceOfficer;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.password = password;
-		this.dateActivation = dateActivation;
-		this.state = state;
+		this.userName = userName;
+	}
+	
+	
+	
+	public SurveillanceOfficer(Long idSurveillanceOfficer, String userName, List<Surveillance> surveillances) {
+		super();
+		this.idSurveillanceOfficer = idSurveillanceOfficer;
+		this.userName = userName;
 		Surveillances = surveillances;
 	}
+
+
+	public SurveillanceOfficer(String userName) {
+		super();
+		this.userName = userName;
+	}
+
+
 
 	public Long getIdSurveillanceOfficer() {
 		return idSurveillanceOfficer;
@@ -58,54 +58,28 @@ public class SurveillanceOfficer implements Serializable{
 		this.idSurveillanceOfficer = idSurveillanceOfficer;
 	}
 
-	public String getFirstName() {
-		return firstName;
+	public String getUserName() {
+		return userName;
 	}
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
-	public String getLastName() {
-		return lastName;
-	}
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public Date getDateActivation() {
-		return dateActivation;
-	}
-
-	public void setDateActivation(Date dateActivation) {
-		this.dateActivation = dateActivation;
-	}
-
-	public boolean isState() {
-		return state;
-	}
-
-	public void setState(boolean state) {
-		this.state = state;
-	}
-
-	public Collection<Surveillance> getSurveillances() {
+	public List<Surveillance> getSurveillances() {
 		return Surveillances;
 	}
 
-	public void setSurveillances(Collection<Surveillance> surveillances) {
+
+	public void setSurveillances(List<Surveillance> surveillances) {
 		Surveillances = surveillances;
 	}
 	
 	
+
+	
+	
+
 
 }
