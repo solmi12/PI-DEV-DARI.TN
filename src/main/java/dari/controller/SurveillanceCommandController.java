@@ -25,7 +25,7 @@ public class SurveillanceCommandController {
 		@Autowired
 		ISurveillanceCommandService surveillanceCommandService;
 	
-		@GetMapping("/detailsCommand/{idCommand}")
+		/*@GetMapping("/detailsCommand/{idCommand}")
 		@ResponseBody
 		public List<LigneCommand> detailsCommand(@PathVariable("idCommand") Long idCommand){
 		return surveillanceCommandService.detailsCommand(idCommand);
@@ -131,7 +131,7 @@ public class SurveillanceCommandController {
 		@ResponseBody
 		public List<SurveillanceCommand> afficherOkCommandAgent(@PathVariable("idAgent") Long idAgent){
 			return surveillanceCommandService.displayCommandAgentByState(idAgent, StateCommand.OK, true);
-		}
+		}*/
 		
 		
 

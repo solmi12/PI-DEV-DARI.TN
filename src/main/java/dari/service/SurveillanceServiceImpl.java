@@ -1,7 +1,12 @@
 package dari.service;
 
 
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
+
+import javax.xml.ws.Response;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import dari.entity.CategorySurveillance;
@@ -17,29 +22,34 @@ public class SurveillanceServiceImpl implements ISurveillanceService{
 	SurveillanceRepository surveillanceRepository;
 	
 	@Autowired
-	SurveillanceOfficerRepository surveillanceOfficerRepository; 
+	SurveillanceOfficerRepository surveillanceOfficerRepository;
 	
-
 	@Override
-	public List<Surveillance> retrieveAllSurveillance() {
+	public String generateCodeCommande() {
 		// TODO Auto-generated method stub
-		List<Surveillance> surveillances = (List<Surveillance>) surveillanceRepository.findAll();
-		return surveillances;
+		return UUID.randomUUID().toString().toUpperCase().substring(0, 18);
 	}
-
+	
+	@Override
+	public void addSurveillanceAndaffecterSurveillanceOfficerToSurveillance(String productName, String capteur,
+			int resolution, int indiceProtection, int porteeInfrarouge, CategorySurveillance categorySurveillance,
+			double price, Long surveillanceOfficerId) {
+		// TODO Auto-generated method stub
+		Surveillance surveillance = new Surveillance(productName, capteur, resolution, indiceProtection, porteeInfrarouge, price, categorySurveillance);
+		SurveillanceOfficer so = surveillanceOfficerRepository.findById(surveillanceOfficerId).get();
+		surveillance.setSurveillanceOfficer(so);
+		surveillance.setCodeSurveillance(generateCodeCommande());
+		surveillance.setDateAdd(new Date());
+		surveillanceRepository.save(surveillance);
+		
+	}
+	
 	@Override
 	public Surveillance retrieveSurveillance(long id) {
 		// TODO Auto-generated method stub
 		return surveillanceRepository.findById(id).get();
 	}
-
-	@Override
-	public Surveillance addSurveillance(Surveillance s) {
-		// TODO Auto-generated method stub
-		surveillanceRepository.save(s);
-		return null ;
-	}
-
+	
 	@Override
 	public int deleteSurveillance(Long id) {
 		// TODO Auto-generated method stub
@@ -47,44 +57,35 @@ public class SurveillanceServiceImpl implements ISurveillanceService{
 		return 1;
 		
 	}
-
-	@Override
-	public Surveillance updateSurveillance(Surveillance u) {
+	
+	/*@Override
+	public Surveillance updateSurveillance(Surveillance s) {
 		// TODO Auto-generated method stub
-		surveillanceRepository.save(u);
-		return u;
-	}
-
-
-	@Override
-	public void affecterSurveillanceOfficerToSurveillance(long SurveillanceOfficerID, long surveillanceId) {
-		// TODO Auto-generated method stub
-		Surveillance s = surveillanceRepository.findById(surveillanceId).get();
-		SurveillanceOfficer so = surveillanceOfficerRepository.findById(SurveillanceOfficerID).get();
-		s.setSurveillanceOfficer(so);
 		surveillanceRepository.save(s);
-		surveillanceOfficerRepository.save(so);
-		}
-
+		return s;
+	}*/
+	
 	@Override
-	public void addSurveillanceAndaffecterSurveillanceOfficerToSurveillance(Surveillance Surveillance,
-			long surveillanceOfficerId) {
+	public List<Surveillance> retrieveAllSurveillanceByOfficer(Long officerId) {
 		// TODO Auto-generated method stub
-		SurveillanceOfficer so = surveillanceOfficerRepository.findById(surveillanceOfficerId).get();
-		Surveillance.setSurveillanceOfficer(so);
-		surveillanceRepository.save(Surveillance);
-		}
-
-	@Override
-	public List<Surveillance> retrieveAllSurveillanceByOfficer(int officerId) {
-		// TODO Auto-generated method stub
-		return surveillanceRepository.retrieveAllSurveillanceByOfficer(officerId);
+		return  surveillanceOfficerRepository.findById(officerId).get().getSurveillances();
 		 
+	}
+	
+	@Override
+	public List<Surveillance> retrieveAllSurveillance() {
+		// TODO Auto-generated method stub
+		return  (List<Surveillance>) surveillanceRepository.findAll();
 	}
 
 	@Override
 	public List<Surveillance> searchSurveillanceByPrice(double Price1, double Price2) {
 		// TODO Auto-generated method stub
+		double x =0;
+		if(Price1>Price2){
+			x=Price2;
+			Price2=Price1;
+			Price1=x;}
 		return surveillanceRepository.findByPriceBetween(Price1, Price2);
 	}
 
@@ -95,9 +96,9 @@ public class SurveillanceServiceImpl implements ISurveillanceService{
 	}
 
 	@Override
-	public List<Surveillance> searchSurveillanceByProvider(String name) {
+	public List<Surveillance> searchSurveillanceByProductName(String name) {
 		// TODO Auto-generated method stub
-		return surveillanceRepository.findByProviderNameLike(name);
+		return surveillanceRepository.findByProductNameLike(name);
 	}
 
 	@Override
@@ -113,37 +114,66 @@ public class SurveillanceServiceImpl implements ISurveillanceService{
 	}
 
 	@Override
-	public List<Surveillance> displaySurveillanceByLike() {
-		// TODO Auto-generated method stub
-		return surveillanceRepository.SurveillanceByLike();
-	}
-
-	@Override
 	public List<Surveillance> displaySurveillanceByDate() {
 		// TODO Auto-generated method stub
 		return surveillanceRepository.SurveillanceByDate();
 	}
 
 	@Override
-	public Surveillance addLike(long surveillanceId) {
+	public Surveillance ajouterSupprimerLike(Long idSurveillance, Long idClient) {
 		// TODO Auto-generated method stub
-		Surveillance s = new Surveillance();
-		s=surveillanceRepository.findById(surveillanceId).get();
-		int nbe =s.getLike()+1;
-		s.setLike(nbe);
-		surveillanceRepository.save(s);
-		return s;
+		Surveillance s = surveillanceRepository.findById(idSurveillance).get();
+		if(! s.getIdClientsLike().contains(idClient)){
+			s.setJaime(s.getJaime()+1);
+			s.getIdClientsLike().add(idClient);
+			surveillanceRepository.save(s);
+			return s;
+		}
+		else {
+			s.setJaime(s.getJaime()-1);
+			s.getIdClientsLike().remove(idClient);
+			surveillanceRepository.save(s);
+			return s;
+		}
+		
+	}
+	
+	@Override
+	public List<Surveillance> displaySurveillanceByLike() {
+		// TODO Auto-generated method stub
+		return surveillanceRepository.SurveillanceByLike();
 	}
 
 	@Override
-	public Surveillance addDeslike(long surveillanceId) {
+	public Surveillance ajouterSupprimerDeslike(Long idSurveillance, Long idClient) {
 		// TODO Auto-generated method stub
-		Surveillance s = new Surveillance();
-		s=surveillanceRepository.findById(surveillanceId).get();
-		int nbe =s.getDeslike();
-		s.setDeslike(nbe);
-		surveillanceRepository.save(s);
-		return s;
+		Surveillance s = surveillanceRepository.findById(idSurveillance).get();
+		if(! s.getIdClientsDeslike().contains(idClient)){
+			s.setJaimeplus(s.getJaimeplus()+1);
+			s.getIdClientsDeslike().add(idClient);
+			surveillanceRepository.save(s);
+			return s;
+		}
+		else {
+			s.setJaimeplus(s.getJaimeplus()-1);
+			s.getIdClientsDeslike().remove(idClient);
+			surveillanceRepository.save(s);
+			return s;
+		}
 	}
+
+	@Override
+	public List<Surveillance> searchSurveillanceByProvider(String name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	
+
+	
+
+	
+
 
 }

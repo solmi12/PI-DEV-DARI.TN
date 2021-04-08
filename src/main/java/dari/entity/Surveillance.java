@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,6 +17,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Surveillance implements Serializable{
 	
@@ -24,9 +28,11 @@ public class Surveillance implements Serializable{
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	private Long idSurveillance ; 
 	
-	private String providerName;
+	private String productName;
 	
 	private String capteur;
+	
+	private String codeSurveillance;
 	
 	private int resolution ;
 	
@@ -36,14 +42,14 @@ public class Surveillance implements Serializable{
 	
 	private double price;
 	
+	private CategorySurveillance categorySurveillance;
+	
+	@Temporal(TemporalType.DATE)
+	private Date dateAdd;
+	
 	private int jaime;
 	
 	private int jaimeplus;
-	
-	private CategorySurveillance categorySurveillance;
-		
-	@Temporal(TemporalType.DATE)
-	private Date dateAdd;
 	
 	@ManyToOne
 	private SurveillanceOfficer surveillanceOfficer;
@@ -55,23 +61,26 @@ public class Surveillance implements Serializable{
 	@OneToMany(cascade = CascadeType.ALL, mappedBy="surveillance")
 	private List<LigneCommand> LigneCommands;
 	
-	public Surveillance(Long idSurveillance, String providerName, String capteur, int resolution, int indiceProtection,
-			int porteeInfrarouge, double price, int like, int deslike, CategorySurveillance categorySurveillance,
-			Date dateAdd) {
+	@Column
+    @ElementCollection(targetClass=Long.class)
+	private List<Long> idClientsLike;
+	
+	@Column
+    @ElementCollection(targetClass=Long.class)
+	private List<Long> idClientsDeslike;
+	
+	public Surveillance(String providerName, String capteur,int resolution, int indiceProtection, int porteeInfrarouge, double price,
+			CategorySurveillance categorySurveillance) {
 		super();
-		this.idSurveillance = idSurveillance;
-		this.providerName = providerName;
+		this.productName = providerName;
 		this.capteur = capteur;
 		this.resolution = resolution;
 		this.indiceProtection = indiceProtection;
 		this.porteeInfrarouge = porteeInfrarouge;
 		this.price = price;
-		this.jaime = like;
-		this.jaimeplus = deslike;
 		this.categorySurveillance = categorySurveillance;
-		this.dateAdd = dateAdd;
 	}
-	
+
 	public Surveillance() {
 		super();
 	}
@@ -84,12 +93,12 @@ public class Surveillance implements Serializable{
 		this.idSurveillance = idSurveillance;
 	}
 
-	public String getProviderName() {
-		return providerName;
+	public String getProductName() {
+		return productName;
 	}
 
-	public void setProviderName(String providerName) {
-		this.providerName = providerName;
+	public void setProductName(String providerName) {
+		this.productName = providerName;
 	}
 
 	public String getCapteur() {
@@ -132,22 +141,6 @@ public class Surveillance implements Serializable{
 		this.price = price;
 	}
 
-	public int getLike() {
-		return jaime;
-	}
-
-	public void setLike(int like) {
-		this.jaime = like;
-	}
-
-	public int getDeslike() {
-		return jaimeplus;
-	}
-
-	public void setDeslike(int deslike) {
-		this.jaimeplus = deslike;
-	}
-
 	public CategorySurveillance getCategorySurveillance() {
 		return categorySurveillance;
 	}
@@ -163,25 +156,74 @@ public class Surveillance implements Serializable{
 	public void setDateAdd(Date dateAdd) {
 		this.dateAdd = dateAdd;
 	}
+	
+	public String getCodeSurveillance() {
+		return codeSurveillance;
+	}
+
+	public void setCodeSurveillance(String codeSurveillance) {
+		this.codeSurveillance = codeSurveillance;
+	}
+
+	public int getJaime() {
+		return jaime;
+	}
+
+	public void setJaime(int jaime) {
+		this.jaime = jaime;
+	}
+
+	public int getJaimeplus() {
+		return jaimeplus;
+	}
+
+	public void setJaimeplus(int jaimeplus) {
+		this.jaimeplus = jaimeplus;
+	}
+	
+	@JsonIgnore
+	public List<Long> getIdClientsLike() {
+		return idClientsLike;
+	}
+
+	public void setIdClientsLike(List<Long> idClients) {
+		this.idClientsLike = idClients;
+	}
+	
+	@JsonIgnore
+	public List<Long> getIdClientsDeslike() {
+		return idClientsDeslike;
+	}
+
+	public void setIdClientsDeslike(List<Long> idClientsDeslike) {
+		this.idClientsDeslike = idClientsDeslike;
+	}
+
+	@JsonIgnore
+	public SurveillanceOfficer getSurveillanceOfficer() {
+		return surveillanceOfficer;
+	}
 
 	public void setSurveillanceOfficer(SurveillanceOfficer surveillanceOfficer) {
 		this.surveillanceOfficer = surveillanceOfficer;
 	}
 	
+	@JsonIgnore
+	public List<SurveillanceNotice> getSurveillanceNotices() {
+		return SurveillanceNotices;
+	}
+
+	public void setSurveillanceNotices(List<SurveillanceNotice> surveillanceNotices) {
+		SurveillanceNotices = surveillanceNotices;
+	}
 	
-	/*public List<LigneCommand> getLigneCommands() {
+	@JsonIgnore
+	public List<LigneCommand> getLigneCommands() {
 		return LigneCommands;
-	}*/
+	}
 
+	public void setLigneCommands(List<LigneCommand> ligneCommands) {
+		LigneCommands = ligneCommands;
+	}
 	
-	
-	
-
-
-	
-	
-	
-	
-	
-
 }

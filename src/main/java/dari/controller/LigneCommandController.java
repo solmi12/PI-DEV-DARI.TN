@@ -21,7 +21,7 @@ public class LigneCommandController {
 	    ILigneCommandService ligneCommandService;
 	
 	
-		@PostMapping("/addLigneCommand/{SurveillancId}/{quantity}") 
+		/*@PostMapping("/addLigneCommand/{SurveillancId}/{quantity}") 
 		@ResponseBody
 		public int addLigneCommand(@PathVariable("SurveillancId") Long SurveillanceId,@PathVariable("quantity") int quantity) { 
 	    ligneCommandService.addLigneCommand(SurveillanceId, quantity);
@@ -54,7 +54,7 @@ public class LigneCommandController {
 		public int ModifierLigneCommandByQuantity(@PathVariable("lcId") Long lcId , @PathVariable("quantity") int quantity) { 
 	    ligneCommandService.updateLigneCommandByQuantity(lcId, quantity);
 		return 200;
-		}
+		}*/
 		
 		
 

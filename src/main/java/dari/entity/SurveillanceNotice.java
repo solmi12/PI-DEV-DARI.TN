@@ -17,6 +17,10 @@ public class SurveillanceNotice implements Serializable{
 	
 	private String description;
 	
+    private int jaime;
+	
+	private int jaimeplus;
+	
 	@ManyToOne
 	private Surveillance surveillance;
 	
@@ -46,9 +50,33 @@ public class SurveillanceNotice implements Serializable{
 		this.description = description;
 	}
 
+	public int getJaime() {
+		return jaime;
+	}
+
+	public void setJaime(int jaime) {
+		this.jaime = jaime;
+	}
+
+	public int getJaimeplus() {
+		return jaimeplus;
+	}
+
+	public void setJaimeplus(int jaimeplus) {
+		this.jaimeplus = jaimeplus;
+	}
+
+	public Surveillance getSurveillance() {
+		return surveillance;
+	}
+
 	public void setSurveillance(Surveillance surveillance) {
 		this.surveillance = surveillance;
 	}
+	
+	
+
+	
 	
 	
 	

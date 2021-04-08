@@ -13,10 +13,10 @@ public class LigneCommandServiceImpl implements ILigneCommandService{
 	@Autowired
 	LigneCommandRepository LigneCommandRepository;
 	
-	@Autowired
-	ISurveillanceService surveillanceService;
+	/*@Autowired
+	ISurveillanceService surveillanceService;*/
 
-	@Override
+	/*@Override
 	public LigneCommand addLigneCommand(Long idSurveillance, int quantity) {
 		// TODO Auto-generated method stub
 		LigneCommand lc = new LigneCommand(quantity,surveillanceService.retrieveSurveillance(idSurveillance));
@@ -56,7 +56,7 @@ public class LigneCommandServiceImpl implements ILigneCommandService{
 		ligne.setLignePrice(ligne.getQuantity()*ligne.getUnitPrice());
 		LigneCommandRepository.save(ligne);
 		return ligne;
-	}
+	}*/
 
 	
 

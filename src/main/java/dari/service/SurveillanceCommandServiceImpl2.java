@@ -27,7 +27,7 @@ public class SurveillanceCommandServiceImpl2 implements ISurveillanceCommandServ
 	@Autowired
 	LigneCommandRepository ligneCommandRepository;
 
-	@Override
+	/*@Override
 	public String generateCodeCommande() {
 		// TODO Auto-generated method stub
 		return UUID.randomUUID().toString().toUpperCase().substring(0, 18);
@@ -71,21 +71,22 @@ public class SurveillanceCommandServiceImpl2 implements ISurveillanceCommandServ
 	public SurveillanceCommand demandeDevis(List<LigneCommand> lc, Long idClient) {
 		// TODO Auto-generated method stub
 		SurveillanceCommand sc = new SurveillanceCommand();
-		surveillanceCommandRepository.save(sc);	
 		sc.setCodeCommande(generateCodeCommande());
 		sc.setDateCammand(new Date());
 		sc.setStateCommand(StateCommand.DEVIS);
 		sc.setStaterequest(false);
 		sc.setFournisseurCommand(surveillanceCommandRepository.findProviderOfCommand(lc.get(0).getIdLigneCommand()));
+		SurveillanceCommand x =  surveillanceCommandRepository.save(sc);
+
 		double pc=0;
 		for (LigneCommand ligneCommand : lc) {
-			ligneCommand.setSurveillanceCommand(sc);
+			ligneCommand.setSurveillanceCommand(x);
 			pc+=ligneCommand.getLignePrice();
 		}
-		sc.setPriceCommand(pc);	
-		sc.setFinalPriceCommand(pc);
-		sc.setClient(clientRepository.findById(idClient).get());
-		return surveillanceCommandRepository.save(sc);
+		x.setPriceCommand(pc);	
+		x.setFinalPriceCommand(pc);
+		x.setClient(clientRepository.findById(idClient).get());
+		return surveillanceCommandRepository.save(x);
 	}
 	
 	@Override
@@ -150,7 +151,7 @@ public class SurveillanceCommandServiceImpl2 implements ISurveillanceCommandServ
 	public SurveillanceCommand responseRetourCommand(Long idCommand) {
 		// TODO Auto-generated method stub
 		return null;
-	}
+	}*/
 
 
 	

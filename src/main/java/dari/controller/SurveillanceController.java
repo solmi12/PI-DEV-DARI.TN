@@ -1,14 +1,21 @@
 package dari.controller;
 
-import java.util.Date;
+
+
 import java.util.List;
+
+import javax.xml.ws.Response;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import dari.entity.CategorySurveillance;
@@ -22,91 +29,146 @@ public class SurveillanceController {
 	@Autowired
 	ISurveillanceService surveillanceService;
 	
-	//ajouter surveillance
-	@PostMapping("/AddSurveillance")
+	//ajouter une surveillance et l'affecter à un agent
+	@PostMapping("/addSurveillanceAndAffecterSurveillanceOfficerToSurveillance/{OfficerId}") 
 	@ResponseBody
-	public Surveillance addSurveillance(@RequestBody Surveillance s) {
-		s.setDateAdd(new Date());
-	Surveillance surveillance = surveillanceService.addSurveillance(s); 
-	return surveillance;
+	public ResponseEntity<String> addSurveillanceAndaffecterSurveillanceOfficerToSurveillance(@RequestParam(value="productName") String productName, @RequestParam(value="capteur") String capteur ,
+			@RequestParam(value="resolution") int resolution,@RequestParam(value="indiceProtection") int indiceProtection,@RequestParam(value="porteeInfrarouge") int porteeInfrarouge,
+			@RequestParam(value="categorySurveillance") CategorySurveillance categorySurveillance,@RequestParam(value="price") double price, @PathVariable("OfficerId") Long surveillanceOfficerId) {
+		// TODO Auto-generated method stub
+		try{			
+		surveillanceService.addSurveillanceAndaffecterSurveillanceOfficerToSurveillance(productName, capteur, resolution, indiceProtection, porteeInfrarouge, categorySurveillance, price, surveillanceOfficerId);
+		return new ResponseEntity<>("ad was added successfully :)" ,  HttpStatus.OK);
+			}
+		catch (Exception e){
+		return new	ResponseEntity<>(e.getMessage() , HttpStatus.EXPECTATION_FAILED);
+			}
+	}
+	
+	//trouver une surveillance par ID
+	@GetMapping("/retrieveSurveillancer/{SurveillanceId}")
+	@ResponseBody
+	public ResponseEntity<Object> retrieveSurveillancer(@PathVariable("SurveillanceId") long id) {
+	
+	try{
+	return new ResponseEntity<Object>(surveillanceService.retrieveSurveillance(id), HttpStatus.OK);
+		}
+	catch(Exception e){
+	return new ResponseEntity<Object>(e.getMessage(),HttpStatus.EXPECTATION_FAILED);
+		}
 	}
 	
 	//supprimer surveillance
 	@DeleteMapping("/RemoveSurveillance/{SurveillancId}") 
 	@ResponseBody
-	public int removeSurveillanceOfficer(@PathVariable("SurveillancId") Long SurveillanceId) { 
-	surveillanceService.deleteSurveillance(SurveillanceId);
-	return 1;
+	public ResponseEntity<String> removeSurveillanceOfficer(@PathVariable("SurveillancId") Long SurveillanceId) { 
+	try{
+		surveillanceService.deleteSurveillance(SurveillanceId);
+	return new ResponseEntity<String>("the ad was successfully deleted :)",HttpStatus.OK);
+	}
+	catch(Exception e){
+		return new ResponseEntity<String>(e.getMessage(),HttpStatus.EXPECTATION_FAILED);	
 	}
 	
-	//modifier surveillance
-	@PutMapping("/modifySurveillance") 
-	@ResponseBody
-	public Surveillance modifySurveillanceOfficer( @RequestBody Surveillance s) { 
-	surveillanceService.updateSurveillance(s);
-	return s;
-	}
-	
-	//affecter un agent à une surveillance
-	@PostMapping("/affecterOfficerToSurveillance/{OfficerId}/{SurveillanceId}") 
-	@ResponseBody
-	public int affecterSurveillanceOfficerToSurveillance(@PathVariable("OfficerId") long OfficerId, @PathVariable("SurveillanceId") long SurveillanceId){ 
-	surveillanceService.affecterSurveillanceOfficerToSurveillance(OfficerId, SurveillanceId);
-	return 10;
-	}
-	
-	//ajouter une surveillance et l'affecter à un agent
-	@PostMapping("/addSurveillanceAndaffecterSurveillanceOfficerToSurveillance/{OfficerId}") 
-	@ResponseBody
-	public int addSurveillanceAndaffecterSurveillanceOfficerToSurveillance(@RequestBody Surveillance s,
-			@PathVariable("OfficerId") long surveillanceOfficerId) {
-		// TODO Auto-generated method stub
-		s.setDateAdd(new Date());
-		surveillanceService.addSurveillanceAndaffecterSurveillanceOfficerToSurveillance(s, surveillanceOfficerId);
-		return 10;
-		}
-	
-	//retourne la liste de tout les surveillances
-		@GetMapping("/retrieveAllSurveillance")
-		@ResponseBody
-		public List<Surveillance> retrieveAllSurveillance() {
-		return surveillanceService.retrieveAllSurveillance();
-		}
-	
-	//trouver une surveillance par ID
-	@GetMapping("/retrieveSurveillancer/{SurveillanceId}")
-	@ResponseBody
-	public Surveillance retrieveSurveillancer(@PathVariable("SurveillanceId") long id) {
-	return surveillanceService.retrieveSurveillance(id);
 	}
 	
 	//trouver les surveillances d'un agent
 	@GetMapping("/retrieveAllSurveillanceByOfficer/{officerId}")
 	@ResponseBody
-	public List<Surveillance> retrieveAllSurveillanceByOfficer(@PathVariable("officerId") int id) {
-	return surveillanceService.retrieveAllSurveillanceByOfficer(id);
+	public ResponseEntity<Object> retrieveAllSurveillanceByOfficer(@PathVariable("officerId") Long id) {
+	try{
+		return new ResponseEntity<Object>(surveillanceService.retrieveAllSurveillanceByOfficer(id),HttpStatus.OK);	
+	}
+	catch (Exception e){
+	return new ResponseEntity<Object>(e.getMessage(),HttpStatus.EXPECTATION_FAILED);
+	}
+		}
+	
+	//modifier surveillance
+	/*@PutMapping("/modifySurveillance") 
+	@ResponseBody
+	public ResponseEntity<Object> modifySurveillanceOfficer( @RequestBody Surveillance s) { 
+	try{
+	return new ResponseEntity<Object>(surveillanceService.updateSurveillance(s), HttpStatus.OK);
+	}
+	catch(Exception e){
+	return new ResponseEntity<Object>(e.getMessage(),HttpStatus.EXPECTATION_FAILED);
+	}
+	
+	}*/
+	
+	//retourne la liste de tout les surveillances
+	@GetMapping("/retrieveAllSurveillance")
+	@ResponseBody
+	public ResponseEntity<Object> retrieveAllSurveillance() {
+		try{
+	return new ResponseEntity<Object>(surveillanceService.retrieveAllSurveillance(), HttpStatus.OK);
+		}
+	catch(Exception e){
+	return new ResponseEntity<Object>(e.getMessage(),HttpStatus.EXPECTATION_FAILED);
+		}
+	}
+	
+	@PutMapping("/like/{idSurveillance}/{idClient}")
+	@ResponseBody
+	public ResponseEntity<Object> addRemoveLike(@PathVariable("idSurveillance") Long idSurveillance,@PathVariable("idClient") Long idClient ) {
+		try{
+	return new ResponseEntity<Object>(surveillanceService.ajouterSupprimerLike(idSurveillance,idClient), HttpStatus.OK);
+		}
+	catch(Exception e){
+	return new ResponseEntity<Object>(e.getMessage(),HttpStatus.EXPECTATION_FAILED);
+		}
+		
+	}
+	
+	@PutMapping("/deslike/{idSurveillance}/{idClient}")
+	@ResponseBody
+	public ResponseEntity<Object> addRemoveDeslike(@PathVariable("idSurveillance") Long idSurveillance,@PathVariable("idClient") Long idClient ) {
+		try{
+	return new ResponseEntity<Object>(surveillanceService.ajouterSupprimerDeslike(idSurveillance, idClient), HttpStatus.OK);
+		}
+	catch(Exception e){
+	return new ResponseEntity<Object>(e.getMessage(),HttpStatus.EXPECTATION_FAILED);
+		}
+		
 	}
 	
 	//recherche entre deux prixs
-	@GetMapping("/searchSurveillanceByPrice/{1}/{2}")
+	@GetMapping("/searchSurveillanceByPrice")
 	@ResponseBody
-	public List<Surveillance> searchSurveillanceByPrice(@PathVariable("1") double Price1 , @PathVariable("2") double Price2) {
-	return surveillanceService.searchSurveillanceByPrice(Price1, Price2);
+	public ResponseEntity<Object> searchSurveillanceByPrice(@RequestParam(value="p1") double Price1 ,@RequestParam(value="p2") double Price2) {
+	try{
+		
+	return new ResponseEntity<Object>(surveillanceService.searchSurveillanceByPrice(Price1, Price2), HttpStatus.OK);
+		}
+	catch(Exception e){
+	return new ResponseEntity<Object>(e.getMessage(),HttpStatus.EXPECTATION_FAILED);
+		}
 		}
 	
 	//recherche par cetegory
-	@GetMapping("/searchSurveillanceByCategory/{category}")
+	@GetMapping("/searchSurveillanceByCategory")
 	@ResponseBody
-	public List<Surveillance> searchSurveillanceByCategory(@PathVariable("category") CategorySurveillance category ) {
-	return surveillanceService.searchSurveillanceByCategory(category);
+	public ResponseEntity<Object> searchSurveillanceByCategory(@RequestParam(value="category") CategorySurveillance category ) {
+	try{
+	return new ResponseEntity<Object>(surveillanceService.searchSurveillanceByCategory(category), HttpStatus.OK);
 			}
+	catch(Exception e){
+	return new ResponseEntity<Object>(e.getMessage(),HttpStatus.EXPECTATION_FAILED);
+			}
+	}
 	
 	//recherche par fournisseur
-	@GetMapping("/searchSurveillanceByProvider/{name}")
+	/*@GetMapping("/searchSurveillanceByProvider")
 	@ResponseBody
-	public List<Surveillance> searchSurveillanceByProvider(@PathVariable("name") String name ) {
-	return surveillanceService.searchSurveillanceByProvider(name);
+	public  ResponseEntity<Object> searchSurveillanceByProvider(@RequestParam(value="name") String name ) {
+	try{
+	return new ResponseEntity<Object>(surveillanceService.searchSurveillanceByProductName(name), HttpStatus.OK);
 		}
+	catch(Exception e){
+	return new ResponseEntity<Object>(e.getMessage(),HttpStatus.EXPECTATION_FAILED);
+		}
+	}*/
 	
 	//afficher par prix asc
 	@GetMapping("/displaySurveillanceByPriceAsc")
@@ -136,20 +198,6 @@ public class SurveillanceController {
 	return surveillanceService.displaySurveillanceByLike();
 				}
 	
-	//add like
-	@PutMapping("/addlikeSurveillance/{SurveillancId}") 
-	@ResponseBody
-	public Surveillance addlikeSurveillance(@PathVariable("SurveillancId") long SurveillanceId) { 
-	return surveillanceService.addLike(SurveillanceId);
-		}
-	//add deslike
-	@PutMapping("/addDeslikeSurveillance/{SurveillancId}") 
-	@ResponseBody
-	public Surveillance addDeslikeSurveillance(@PathVariable("SurveillancId") long SurveillanceId) { 
-	return surveillanceService.addDeslike(SurveillanceId);
-			}
 
-	
-	
 
 }
