@@ -20,7 +20,9 @@ public interface SurveillanceRepository extends JpaRepository<Surveillance, Long
 	
 	List<Surveillance> findByCategorySurveillanceLike(CategorySurveillance category);
 	
-	List<Surveillance> findByProductNameLike(String name);
+	Surveillance findByProductNameLike(String name);
+	
+	Surveillance findByCodeSurveillanceLike(String code);
 	
 	@Query("SELECT s FROM Surveillance AS s ORDER BY s.price")
     List<Surveillance> SurveillanceByPriceAsc();

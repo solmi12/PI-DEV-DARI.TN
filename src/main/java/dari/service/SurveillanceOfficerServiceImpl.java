@@ -31,7 +31,7 @@ public class SurveillanceOfficerServiceImpl implements ISurveillanceOfficerServi
 	@Override
 	public void deleteSurveillanceOfficerAndtheirServeillance(Long id) {
 		// TODO Auto-generated method stub
-		surveillanceOfficerRepository.deleteSurveillanceOfficerAndtheirServeillance(id);
+	//	surveillanceOfficerRepository.deleteSurveillanceOfficerAndtheirServeillance(id);
 		surveillanceOfficerRepository.deleteById(id);
 		
 	}

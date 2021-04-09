@@ -4,6 +4,7 @@ package dari.service;
 import java.util.List;
 import dari.entity.CategorySurveillance;
 import dari.entity.Surveillance;
+import dari.entity.SurveillanceOfficer;
 
 
 
@@ -16,9 +17,10 @@ public interface ISurveillanceService {
 	
 	public Surveillance retrieveSurveillance(long id); //trouver une surveillance par ID :)
 	
-	public int deleteSurveillance(Long id); //supprimer surveillance :)
+	public String deleteSurveillance(Long idSurveillance , Long idAgent); //supprimer surveillance :)
 	
-	//public Surveillance updateSurveillance(Surveillance s); //modifier surveillance :)
+	public Object updateSurveillance(String productName, String capteur , int resolution, int indiceProtection,
+	int porteeInfrarouge,CategorySurveillance categorySurveillance,double price, Long surveillanceOfficerId , Long surveillanceId); //modifier surveillance :)
 	
 	public Surveillance ajouterSupprimerLike(Long idSurveillance, Long idClient);
 	
@@ -32,7 +34,9 @@ public interface ISurveillanceService {
 	
 	public List<Surveillance> searchSurveillanceByCategory(CategorySurveillance category);//trouver les surveillances par category :)
 	
-	public List<Surveillance> searchSurveillanceByProductName(String name); //trouver les surveillances par Provider :)
+	public Surveillance searchSurveillanceByProductName(String name); //trouver les surveillances par ProductName :)
+	
+	public Surveillance searchSurveillanceByCode(String name);
 	
 	public List<Surveillance> searchSurveillanceByProvider(String name); //trouver les surveillances par Provider :)
 	

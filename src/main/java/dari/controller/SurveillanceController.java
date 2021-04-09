@@ -20,7 +20,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import dari.entity.CategorySurveillance;
 import dari.entity.Surveillance;
+import dari.entity.SurveillanceOfficer;
+import dari.repository.SurveillanceOfficerRepository;
 import dari.service.ISurveillanceService;
+import javassist.NotFoundException;
 
 @RestController
 public class SurveillanceController {
@@ -59,11 +62,11 @@ public class SurveillanceController {
 	}
 	
 	//supprimer surveillance
-	@DeleteMapping("/RemoveSurveillance/{SurveillancId}") 
+	@DeleteMapping("/RemoveSurveillance/{SurveillancId}/{idAgent}") 
 	@ResponseBody
-	public ResponseEntity<String> removeSurveillanceOfficer(@PathVariable("SurveillancId") Long SurveillanceId) { 
+	public ResponseEntity<String> removeSurveillanceOfficer(@PathVariable("SurveillancId") Long SurveillanceId ,@PathVariable("SurveillancId") Long idAgent) { 
 	try{
-		surveillanceService.deleteSurveillance(SurveillanceId);
+		surveillanceService.deleteSurveillance(SurveillanceId,idAgent);
 	return new ResponseEntity<String>("the ad was successfully deleted :)",HttpStatus.OK);
 	}
 	catch(Exception e){
@@ -85,17 +88,22 @@ public class SurveillanceController {
 		}
 	
 	//modifier surveillance
-	/*@PutMapping("/modifySurveillance") 
+	@PutMapping("/modifySurveillance/{OfficerId}/{surveillanceId}") 
 	@ResponseBody
-	public ResponseEntity<Object> modifySurveillanceOfficer( @RequestBody Surveillance s) { 
-	try{
-	return new ResponseEntity<Object>(surveillanceService.updateSurveillance(s), HttpStatus.OK);
+	public ResponseEntity<Object> updateSurveillance(@RequestParam(value="productName") String productName, @RequestParam(value="capteur") String capteur ,
+			@RequestParam(value="resolution") int resolution,@RequestParam(value="indiceProtection") int indiceProtection,@RequestParam(value="porteeInfrarouge") int porteeInfrarouge,
+			@RequestParam(value="categorySurveillance") CategorySurveillance categorySurveillance,@RequestParam(value="price") double price, @PathVariable("OfficerId") Long surveillanceOfficerId,
+			@PathVariable("surveillanceId") Long surveillanceId) {
+		// TODO Auto-generated method stub
+		try{			
+		
+		return new ResponseEntity<Object>(surveillanceService.updateSurveillance(productName, capteur, resolution, indiceProtection, porteeInfrarouge,
+				categorySurveillance, price, surveillanceOfficerId, surveillanceId),  HttpStatus.OK);
+			}
+		catch (Exception e){
+		return new	ResponseEntity<Object>(e.getMessage() , HttpStatus.EXPECTATION_FAILED);
+			}
 	}
-	catch(Exception e){
-	return new ResponseEntity<Object>(e.getMessage(),HttpStatus.EXPECTATION_FAILED);
-	}
-	
-	}*/
 	
 	//retourne la liste de tout les surveillances
 	@GetMapping("/retrieveAllSurveillance")
@@ -158,17 +166,15 @@ public class SurveillanceController {
 			}
 	}
 	
+	@Autowired
+	SurveillanceOfficerRepository surveillanceOfficerRepository;
+	
 	//recherche par fournisseur
-	/*@GetMapping("/searchSurveillanceByProvider")
+	@GetMapping("/searchSurveillanceByProvider")
 	@ResponseBody
-	public  ResponseEntity<Object> searchSurveillanceByProvider(@RequestParam(value="name") String name ) {
-	try{
-	return new ResponseEntity<Object>(surveillanceService.searchSurveillanceByProductName(name), HttpStatus.OK);
-		}
-	catch(Exception e){
-	return new ResponseEntity<Object>(e.getMessage(),HttpStatus.EXPECTATION_FAILED);
-		}
-	}*/
+	public List<Surveillance> searchSurveillanceByProvider(@RequestParam(value="name") String name ) {
+	return surveillanceService.searchSurveillanceByProvider(name);
+	}
 	
 	//afficher par prix asc
 	@GetMapping("/displaySurveillanceByPriceAsc")
@@ -198,6 +204,11 @@ public class SurveillanceController {
 	return surveillanceService.displaySurveillanceByLike();
 				}
 	
+	@GetMapping("/displaySurveillanceByCode")
+	@ResponseBody
+	public ResponseEntity<Surveillance> displaySurveillanceByCode(@RequestParam(value="code") String code) {
+		return new ResponseEntity<Surveillance>(surveillanceService.searchSurveillanceByCode(code), HttpStatus.OK);
+		}
 
 
 }

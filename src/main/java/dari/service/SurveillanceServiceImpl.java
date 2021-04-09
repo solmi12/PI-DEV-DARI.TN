@@ -4,9 +4,6 @@ package dari.service;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
-
-import javax.xml.ws.Response;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import dari.entity.CategorySurveillance;
@@ -51,19 +48,18 @@ public class SurveillanceServiceImpl implements ISurveillanceService{
 	}
 	
 	@Override
-	public int deleteSurveillance(Long id) {
+	public String deleteSurveillance(Long id , Long idAgent) {
 		// TODO Auto-generated method stub
+		Surveillance s = surveillanceRepository.findById(id).get();
+		if(s.getSurveillanceOfficer().getIdSurveillanceOfficer()==idAgent){
 		surveillanceRepository.deleteById(id);
-		return 1;
+		return null;
+		}
+		else{
+			return null;
+		}
 		
 	}
-	
-	/*@Override
-	public Surveillance updateSurveillance(Surveillance s) {
-		// TODO Auto-generated method stub
-		surveillanceRepository.save(s);
-		return s;
-	}*/
 	
 	@Override
 	public List<Surveillance> retrieveAllSurveillanceByOfficer(Long officerId) {
@@ -85,7 +81,8 @@ public class SurveillanceServiceImpl implements ISurveillanceService{
 		if(Price1>Price2){
 			x=Price2;
 			Price2=Price1;
-			Price1=x;}
+			Price1=x;
+			}
 		return surveillanceRepository.findByPriceBetween(Price1, Price2);
 	}
 
@@ -96,7 +93,7 @@ public class SurveillanceServiceImpl implements ISurveillanceService{
 	}
 
 	@Override
-	public List<Surveillance> searchSurveillanceByProductName(String name) {
+	public Surveillance searchSurveillanceByProductName(String name) {
 		// TODO Auto-generated method stub
 		return surveillanceRepository.findByProductNameLike(name);
 	}
@@ -165,7 +162,35 @@ public class SurveillanceServiceImpl implements ISurveillanceService{
 	@Override
 	public List<Surveillance> searchSurveillanceByProvider(String name) {
 		// TODO Auto-generated method stub
-		return null;
+		return surveillanceOfficerRepository.findByUserNameLike(name).getSurveillances();
+	}
+
+	@Override
+	public Surveillance searchSurveillanceByCode(String code) {
+		// TODO Auto-generated method stub
+		return surveillanceRepository.findByCodeSurveillanceLike(code);
+	}
+
+	@Override
+	public Object updateSurveillance(String productName, String capteur, int resolution, int indiceProtection,
+			int porteeInfrarouge, CategorySurveillance categorySurveillance, double price, Long surveillanceOfficerId,
+			Long surveillanceId) {
+		// TODO Auto-generated method stub
+		Surveillance s = surveillanceRepository.findById(surveillanceId).get();
+		if(s.getSurveillanceOfficer().getIdSurveillanceOfficer()==surveillanceOfficerId){
+		s.setProductName(productName);
+		s.setCapteur(capteur);
+		s.setResolution(resolution);
+		s.setIndiceProtection(indiceProtection);
+		s.setPorteeInfrarouge(porteeInfrarouge);
+		s.setCategorySurveillance(categorySurveillance);
+		s.setPrice(price);
+		surveillanceRepository.save(s);
+		return "the ad has been modified successfully :)";
+		}
+		else {
+		return "modification failure" ;
+		}
 	}
 
 
