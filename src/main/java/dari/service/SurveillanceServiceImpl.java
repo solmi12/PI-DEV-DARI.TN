@@ -1,16 +1,19 @@
 package dari.service;
-
-
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import dari.entity.CategorySurveillance;
 import dari.entity.Surveillance;
 import dari.entity.SurveillanceOfficer;
+import dari.entity.Valeurs;
 import dari.repository.SurveillanceOfficerRepository;
 import dari.repository.SurveillanceRepository;
+import dari.repository.ValeursRepository;
 
 @Service
 public class SurveillanceServiceImpl implements ISurveillanceService{
@@ -21,10 +24,69 @@ public class SurveillanceServiceImpl implements ISurveillanceService{
 	@Autowired
 	SurveillanceOfficerRepository surveillanceOfficerRepository;
 	
+	@Autowired
+	ValeursRepository valeursRepository;
+	
 	@Override
 	public String generateCodeCommande() {
 		// TODO Auto-generated method stub
 		return UUID.randomUUID().toString().toUpperCase().substring(0, 18);
+	}
+	
+	@Override
+	public Surveillance addValueInMap(Long idSurveillance, Long key, Long value) {
+		// TODO Auto-generated method stub
+		Surveillance s = surveillanceRepository.findById(idSurveillance).get();
+		if(! s.getAvisClients().containsKey(key) )
+		{
+		Valeurs v = new Valeurs();
+		v.getValeurs().add(value);
+		valeursRepository.save(v);
+		s.getAvisClients().put(key, v);
+		surveillanceRepository.save(s);
+		}
+		else{
+		Valeurs v = s.getAvisClients().get(key);
+		v.getValeurs().add(value);
+		valeursRepository.save(v);
+		s.getAvisClients().put(key, v);
+		surveillanceRepository.save(s);
+		}
+		return s;
+	}
+	
+	@Override
+	public boolean searchValueInMap(Long idSurveillance, Long key, Long value) {
+		// TODO Auto-generated method stub
+		Surveillance s = surveillanceRepository.findById(idSurveillance).get();
+		Map<Long,Valeurs> map = s.getAvisClients();
+			if (map.containsKey(key)&& map.get(key).getValeurs().contains(value)){
+				
+				return true;
+			}
+			else return false;
+	}
+	
+	@Override
+	public Surveillance deleteValueInMap(Long idSurveillance, Long key, Long value) {
+		// TODO Auto-generated method stub
+		Surveillance s = surveillanceRepository.findById(idSurveillance).get();
+		if (! searchValueInMap(idSurveillance,key,value)){
+			Map<Long,Valeurs> map = s.getAvisClients();
+			Valeurs v = map.get(key);
+			v.getValeurs().remove(value);
+			valeursRepository.save(v);
+			map.put(key,v);
+			if(v.getValeurs().size()==0)
+			{
+				map.remove(key);
+				valeursRepository.deleteById(v.getIdValeur());
+			}
+		s.setAvisClients(map);
+		surveillanceRepository.save(s);
+		}
+		
+		return s;
 	}
 	
 	@Override
@@ -192,13 +254,6 @@ public class SurveillanceServiceImpl implements ISurveillanceService{
 		return "modification failure" ;
 		}
 	}
-
-
-	
-
-	
-
-	
 
 
 }

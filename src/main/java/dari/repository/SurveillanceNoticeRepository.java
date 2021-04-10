@@ -10,7 +10,5 @@ import dari.entity.SurveillanceNotice;
 @Repository
 public interface SurveillanceNoticeRepository extends JpaRepository<SurveillanceNotice, Long>{
 	
-	@Query(value = "SELECT * FROM surveillance_notice sn WHERE sn.surveillance_id_surveillance=?1" , nativeQuery=true)
-	List<SurveillanceNotice> retrieveAllSurveillanceNoticeBySurveillance(long surveillanceId);
 
 }

@@ -12,6 +12,12 @@ public interface ISurveillanceService {
 	
 	public String generateCodeCommande();
 	
+	public Surveillance addValueInMap(Long idSurveillance , Long key , Long value);
+	
+	public boolean searchValueInMap(Long idSurveillance , Long key , Long value);
+	
+	public Surveillance deleteValueInMap(Long idSurveillance , Long key , Long value);
+	
 	public void addSurveillanceAndaffecterSurveillanceOfficerToSurveillance(String productName, String capteur , int resolution, int indiceProtection,
 			int porteeInfrarouge,CategorySurveillance categorySurveillance,double price, Long surveillanceOfficerId); //ajouter une surveillance et l'affecter à un agent :)
 	

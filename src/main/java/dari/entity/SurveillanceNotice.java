@@ -7,6 +7,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 @Entity
 public class SurveillanceNotice implements Serializable{
@@ -24,9 +26,8 @@ public class SurveillanceNotice implements Serializable{
 		super();
 	}
 
-	public SurveillanceNotice(Long idNotice, String description) {
-		super();
-		this.idNotice = idNotice;
+	public SurveillanceNotice(String description) {
+		super();	
 		this.description = description;
 	}
 
@@ -46,6 +47,7 @@ public class SurveillanceNotice implements Serializable{
 		this.description = description;
 	}
 
+	@JsonIgnore
 	public Surveillance getSurveillance() {
 		return surveillance;
 	}

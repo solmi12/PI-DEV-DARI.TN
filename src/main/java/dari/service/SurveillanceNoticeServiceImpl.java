@@ -1,11 +1,19 @@
 package dari.service;
 
-
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import dari.entity.Client;
 import dari.entity.Surveillance;
 import dari.entity.SurveillanceNotice;
+import dari.repository.ClientRepository;
 import dari.repository.SurveillanceNoticeRepository;
 import dari.repository.SurveillanceRepository;
 
@@ -16,33 +24,39 @@ public class SurveillanceNoticeServiceImpl implements ISurveillanceNoticeService
 	SurveillanceNoticeRepository surveillanceNoticeRepository;
 	
 	@Autowired
-	SurveillanceRepository surveillanceRepository;
-
+	ISurveillanceService SurveillanceService;
+	
 	@Override
-	public int addSurveillanceNoticeAndaffecterSurveillanceToSurveillanceNotice(SurveillanceNotice notice,
-			long surveillanceId) {
+	public SurveillanceNotice addSurveillanceNoticeAndaffecterSurveillanceToSurveillanceNotice(String description, Long surveillanceId,Long idClient) {
 		// TODO Auto-generated method stub
-		Surveillance s = surveillanceRepository.findById(surveillanceId).get();
+		SurveillanceNotice notice = new SurveillanceNotice(description);
+		Surveillance s =SurveillanceService.retrieveSurveillance(surveillanceId);
 		notice.setSurveillance(s);
 		surveillanceNoticeRepository.save(notice);
-		return 1;
+		SurveillanceService.addValueInMap(surveillanceId, idClient, notice.getIdNotice());
+		return notice;
 	}
 
 	@Override
-	public int deleteSurveillanceNotice(Long id) {
+	public String deleteSurveillanceNotice(Long idSurveillance, Long idClient, Long idNotice) {
 		// TODO Auto-generated method stub
-		surveillanceNoticeRepository.deleteById(id);
-		return 1;
+		if( SurveillanceService.searchValueInMap(idSurveillance, idClient, idNotice))
+		{
+			surveillanceNoticeRepository.deleteById(idNotice);
+			SurveillanceService.deleteValueInMap(idSurveillance, idClient, idNotice);
+			return "your review has been deleted";
+		}
+		return "you do not have the right to delete";
 	}
 
 	@Override
-	public List<SurveillanceNotice> retrieveSurveillanceNoticeBySurveillance(long SurveillanceId) {
+	public List<SurveillanceNotice> retrieveSurveillanceNoticeBySurveillance(Long SurveillanceId) {
 		// TODO Auto-generated method stub
-		return surveillanceNoticeRepository.retrieveAllSurveillanceNoticeBySurveillance(SurveillanceId);
+		return SurveillanceService.retrieveSurveillance(SurveillanceId).getSurveillanceNotices();
 	}
 
 	
-	
+
 	
 
 }

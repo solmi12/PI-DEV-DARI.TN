@@ -2,21 +2,27 @@ package dari.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
 import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapKey;
+import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.JoinColumn;
 
+import javax.persistence.TemporalType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -26,6 +32,7 @@ public class Surveillance implements Serializable{
 	
 	@Id
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
+	@Column(name="idSurveillance")
 	private Long idSurveillance ; 
 	
 	private String productName;
@@ -67,7 +74,16 @@ public class Surveillance implements Serializable{
 	
 	@Column
     @ElementCollection(targetClass=Long.class)
-	private List<Long> idClientsDeslike;
+	private List<Long> idClientsDeslike;	
+	
+	@ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+    		name = "map", 
+    		joinColumns = {@JoinColumn( referencedColumnName = "idSurveillance")},
+    		inverseJoinColumns = {@JoinColumn( referencedColumnName = "idValeur")})
+   @MapKeyColumn(name = "Client")
+	@ElementCollection
+	private Map<Long,Valeurs> avisClients;
 	
 	public Surveillance(String providerName, String capteur,int resolution, int indiceProtection, int porteeInfrarouge, double price,
 			CategorySurveillance categorySurveillance) {
@@ -79,10 +95,12 @@ public class Surveillance implements Serializable{
 		this.porteeInfrarouge = porteeInfrarouge;
 		this.price = price;
 		this.categorySurveillance = categorySurveillance;
+		this.avisClients=new HashMap<>();
 	}
 
 	public Surveillance() {
 		super();
+		this.avisClients=new HashMap<>();
 	}
 
 	public Long getIdSurveillance() {
@@ -198,10 +216,19 @@ public class Surveillance implements Serializable{
 	public void setIdClientsDeslike(List<Long> idClientsDeslike) {
 		this.idClientsDeslike = idClientsDeslike;
 	}
-
+	
 	@JsonIgnore
 	public SurveillanceOfficer getSurveillanceOfficer() {
 		return surveillanceOfficer;
+	}
+
+	@JsonIgnore
+	public Map<Long, Valeurs> getAvisClients() {
+		return avisClients;
+	}
+
+	public void setAvisClients(Map<Long, Valeurs> avisClients) {
+		this.avisClients = avisClients;
 	}
 
 	public void setSurveillanceOfficer(SurveillanceOfficer surveillanceOfficer) {

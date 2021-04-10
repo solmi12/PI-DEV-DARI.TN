@@ -3,13 +3,18 @@ package dari.entity;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Client implements Serializable{
@@ -48,7 +53,7 @@ public class Client implements Serializable{
 	public void setUsername(String username) {
 		this.username = username;
 	}
-
+	 
 	public List<SurveillanceCommand> getSurveillanceCommands() {
 		return SurveillanceCommands;
 	}

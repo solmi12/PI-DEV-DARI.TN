@@ -22,6 +22,8 @@ import dari.entity.CategorySurveillance;
 import dari.entity.Surveillance;
 import dari.entity.SurveillanceOfficer;
 import dari.repository.SurveillanceOfficerRepository;
+import dari.repository.SurveillanceRepository;
+import dari.repository.ValeursRepository;
 import dari.service.ISurveillanceService;
 import javassist.NotFoundException;
 
@@ -31,6 +33,18 @@ public class SurveillanceController {
 	
 	@Autowired
 	ISurveillanceService surveillanceService;
+	
+	@Autowired
+	SurveillanceRepository surveillance;
+	
+	@PostMapping("/add") 
+	@ResponseBody
+	public ResponseEntity<Object> test( ) {
+	// TODO Auto-generated method stub
+		Surveillance s = new Surveillance();
+		surveillance.save(s);
+	return new ResponseEntity<Object>(s,  HttpStatus.OK);
+	}
 	
 	//ajouter une surveillance et l'affecter à un agent
 	@PostMapping("/addSurveillanceAndAffecterSurveillanceOfficerToSurveillance/{OfficerId}") 
