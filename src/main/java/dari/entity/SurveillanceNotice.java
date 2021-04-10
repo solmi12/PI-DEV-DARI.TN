@@ -14,6 +14,11 @@ import javax.persistence.TemporalType;
 @Entity
 public class SurveillanceNotice implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4595897004490546440L;
+
 	@Id
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	private Long idNotice;
