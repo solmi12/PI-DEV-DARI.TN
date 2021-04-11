@@ -1,6 +1,7 @@
 package dari.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -189,9 +190,19 @@ public class SurveillanceCommandServiceImpl2 implements ISurveillanceCommandServ
 		SurveillanceOfficer so = surveillanceCommandRepository.findOfficerOfCommand(idCommand);
 		Client c =sc.getClient();
 		Map<SurveillanceOfficer,Double> map = c.getAvoirs();
+		if(map.containsKey(so)){
+			Double valeurs;
+			for(Map.Entry<SurveillanceOfficer, Double> m : map.entrySet()){
+				if(m.getKey().equals(so)){
+					valeurs=m.getValue();
+					valeurs+=sc.getFinalPriceCommand();
+					map.put(so,valeurs);
+					c.setAvoirs(map);
+					clientRepository.save(c);}}}
+		else{
 		map.put(so, sc.getFinalPriceCommand());
 		c.setAvoirs(map);
-		clientRepository.save(c);
+		clientRepository.save(c);}
 		return map;
 	}
 
@@ -202,9 +213,19 @@ public class SurveillanceCommandServiceImpl2 implements ISurveillanceCommandServ
 		SurveillanceOfficer so = surveillanceCommandRepository.findOfficerOfCommand(idCommand);
 		Client c =sc.getClient();
 		Map<Client,Double> map = so.getAvoirs();
+		if(map.containsKey(c)){
+			Double valeur;
+			for (Map.Entry<Client, Double> m : map.entrySet()) {
+				if(m.getKey().equals(c)){
+				valeur=m.getValue();
+				valeur+=sc.getFinalPriceCommand();
+				map.put(c, valeur);
+				so.setAvoirs(map);
+				surveillanceOfficerRepository.save(so);}}}
+		else{
 		map.put(c, sc.getFinalPriceCommand());
 		so.setAvoirs(map);
-		surveillanceOfficerRepository.save(so);
+		surveillanceOfficerRepository.save(so);	}
 		return map;
 	}
 
