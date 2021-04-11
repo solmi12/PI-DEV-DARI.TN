@@ -2,10 +2,13 @@ package dari.service;
 
 
 import java.util.List;
+import java.util.Map;
 
+import dari.entity.Client;
 import dari.entity.LigneCommand;
 import dari.entity.StateCommand;
 import dari.entity.SurveillanceCommand;
+import dari.entity.SurveillanceOfficer;
 
 
 
@@ -18,6 +21,8 @@ public interface ISurveillanceCommandService {
 	public List<LigneCommand> detailsCommand(Long idCommand); //:)
 	
 	public void removeCommand(Long idCommand);
+	
+	public boolean verifeCommand(List<LigneCommand> lc);
 	
 	//#################################### DISPLAY #####################################
 	
@@ -45,6 +50,10 @@ public interface ISurveillanceCommandService {
 	
 	public SurveillanceCommand requestRetourCommand(Long idCommand);
 	
-	public SurveillanceCommand responseRetourCommand(Long idCommand);
+	public SurveillanceCommand responseRetourCommand(Long idCommand , String description , boolean avoir);
+	
+	public Map<SurveillanceOfficer, Double> AvoirClient(Long idCommand);
+	
+	public Map<Client, Double> AvoirAgent(Long idCommand);
 	
 }

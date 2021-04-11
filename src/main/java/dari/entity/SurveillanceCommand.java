@@ -39,6 +39,8 @@ public class SurveillanceCommand implements Serializable{
 	
 	private boolean staterequest;
 	
+	private boolean avoir;
+	
 	private String codeCommande;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy="surveillanceCommand")
@@ -129,9 +131,10 @@ public class SurveillanceCommand implements Serializable{
 		this.ligneCommands = ligneCommands;
 	}
 
-	/*public Client getClient() {
+	@JsonIgnore
+	public Client getClient() {
 		return client;
-	}*/
+	}
 
 	public void setClient(Client client) {
 		this.client = client;
@@ -159,6 +162,14 @@ public class SurveillanceCommand implements Serializable{
 
 	public void setCodeCommande(String codeCommande) {
 		this.codeCommande = codeCommande;
+	}
+
+	public boolean isAvoir() {
+		return avoir;
+	}
+
+	public void setAvoir(boolean avoir) {
+		this.avoir = avoir;
 	}
 	
 	

@@ -79,7 +79,7 @@ public class Surveillance implements Serializable{
     		name = "map", 
     		joinColumns = {@JoinColumn( referencedColumnName = "idSurveillance")},
     		inverseJoinColumns = {@JoinColumn( referencedColumnName = "idValeur")})
-   @MapKeyColumn(name = "Client")
+    @MapKeyColumn(name = "Client")
 	@ElementCollection
 	private Map<Long,Valeurs> avisClients;
 	

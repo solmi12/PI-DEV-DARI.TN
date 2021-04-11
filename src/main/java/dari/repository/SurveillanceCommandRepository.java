@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import dari.entity.StateCommand;
 import dari.entity.SurveillanceCommand;
+import dari.entity.SurveillanceOfficer;
 
 
 @Repository
@@ -17,22 +18,29 @@ public interface SurveillanceCommandRepository extends JpaRepository<Surveillanc
 			+ "WHERE lc.idLigneCommand=?1")
 	public String findProviderOfCommand(Long idLigneCommand);
 	
-	@Query(value="SELECT * FROM surveillance_command "
-			+ "WHERE surveillance_command.client_id_client=?1 "
-			+ "AND surveillance_command.state_command=?2 "
-			+ "AND surveillance_command.staterequest=?3",nativeQuery=true)
+	@Query("SELECT sc FROM SurveillanceCommand sc "
+			+ "WHERE sc.client=?1 "
+			+ "AND sc.stateCommand=?2 "
+			+ "AND sc.staterequest=?3")
 	public List<SurveillanceCommand> afficherCommandClientByPara(Long idClient , StateCommand st , boolean staterequest);
 	
-	@Query(value="SELECT DISTINCT surveillance_command.code_commande FROM surveillance_command "
-			+ "INNER JOIN ligne_command ON (surveillance_command.id_command=ligne_command.id_command)"
-			+ "INNER JOIN surveillance ON(surveillance.id_surveillance=ligne_command.id_surveillance)"
-			+ "WHERE (surveillance.surveillance_officer_id_surveillance_officer)=?1",nativeQuery=true)
+	@Query(value="SELECT DISTINCT sc.codeCommande FROM SurveillanceCommand sc "
+			+ " JOIN sc.ligneCommands lc "
+			+ " JOIN lc.surveillance s"
+			+ "WHERE s.surveillanceOfficer=?1",nativeQuery=true)
 	public List<String> trouverCodeCommandeAgent(Long idAgent);
 	
-	@Query(value="SELECT * FROM surveillance_command WHERE surveillance_command.code_commande=?1 "
-			+ "AND surveillance_command.state_command=?2 "
-			+ "AND surveillance_command.staterequest=?3",nativeQuery=true)
+	@Query(value="SELECT sc FROM SurveillanceCommand sc "
+			+ "WHERE sc.codeCommande=?1 "
+			+ "AND sc.stateCommand=?2 "
+			+ "AND sc.staterequest=?3",nativeQuery=true)
 	public SurveillanceCommand afficherCommandAgentByPara(String codeCommand , StateCommand st , boolean staterequest);
 	
+	@Query("SELECT DISTINCT so FROM SurveillanceOfficer so "
+			+ "JOIN so.Surveillances s "
+			+ "JOIN s.LigneCommands lc "
+			+ "JOIN lc.surveillanceCommand sc "
+			+ "WHERE sc.idCommand=?1")
+	public SurveillanceOfficer findOfficerOfCommand(Long idCommand);
 	
 }

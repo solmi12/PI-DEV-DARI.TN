@@ -12,28 +12,12 @@ public class SurveillanceOfficerServiceImpl implements ISurveillanceOfficerServi
 	
 	@Autowired
 	SurveillanceOfficerRepository surveillanceOfficerRepository;
-	
-
 	@Override
-	public void deleteSurveillanceOfficer(Long id) {
+	public SurveillanceOfficer addSurveillanceOfficer() {
 		// TODO Auto-generated method stub
-		surveillanceOfficerRepository.deleteById(id);
-		
-	}
-
-	@Override
-	public SurveillanceOfficer addSurveillanceOfficer(SurveillanceOfficer surveillanceOfficer) {
-		// TODO Auto-generated method stub
+		SurveillanceOfficer surveillanceOfficer = new SurveillanceOfficer();
 		surveillanceOfficerRepository.save(surveillanceOfficer);
 		return surveillanceOfficer;
-	}
-
-	@Override
-	public void deleteSurveillanceOfficerAndtheirServeillance(Long id) {
-		// TODO Auto-generated method stub
-	//	surveillanceOfficerRepository.deleteSurveillanceOfficerAndtheirServeillance(id);
-		surveillanceOfficerRepository.deleteById(id);
-		
 	}
 
 	

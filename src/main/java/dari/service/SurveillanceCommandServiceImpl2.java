@@ -3,17 +3,21 @@ package dari.service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import dari.entity.Client;
 import dari.entity.LigneCommand;
 import dari.entity.StateCommand;
 import dari.entity.SurveillanceCommand;
+import dari.entity.SurveillanceOfficer;
 import dari.repository.ClientRepository;
 import dari.repository.LigneCommandRepository;
 import dari.repository.SurveillanceCommandRepository;
+import dari.repository.SurveillanceOfficerRepository;
 
 @Service
 public class SurveillanceCommandServiceImpl2 implements ISurveillanceCommandService{
@@ -23,6 +27,9 @@ public class SurveillanceCommandServiceImpl2 implements ISurveillanceCommandServ
 	
 	@Autowired
 	ClientRepository clientRepository;
+	
+	@Autowired
+	SurveillanceOfficerRepository surveillanceOfficerRepository;
 	
 	@Autowired
 	LigneCommandRepository ligneCommandRepository;
@@ -36,9 +43,7 @@ public class SurveillanceCommandServiceImpl2 implements ISurveillanceCommandServ
 	@Override
 	public void removeCommand(Long idCommand) {
 		// TODO Auto-generated method stub
-		surveillanceCommandRepository.deleteById(idCommand);
-		
-		
+		surveillanceCommandRepository.deleteById(idCommand);			
 	}
 	
 	@Override
@@ -47,6 +52,19 @@ public class SurveillanceCommandServiceImpl2 implements ISurveillanceCommandServ
 		return surveillanceCommandRepository.findById(idCommand).get().getLigneCommands();
 	}
 	
+	@Override
+	public boolean verifeCommand(List<LigneCommand> lc) {
+		// TODO Auto-generated method stub
+		Long idAgent0=ligneCommandRepository.returnIdAgentByLigneCommande(lc.get(0).getIdLigneCommand());
+		for (LigneCommand ligneCommand : lc) {
+			Long idAgent = ligneCommandRepository.returnIdAgentByLigneCommande(ligneCommand.getIdLigneCommand());
+			if(idAgent0 !=idAgent )
+			{
+				return false;
+			}
+		}
+		return true;
+	}
 	@Override
 	public List<SurveillanceCommand> displayCommandClientByState(Long idClient, StateCommand sc, boolean stateRequest) {
 		// TODO Auto-generated method stub
@@ -143,14 +161,54 @@ public class SurveillanceCommandServiceImpl2 implements ISurveillanceCommandServ
 	@Override
 	public SurveillanceCommand requestRetourCommand(Long idCommand) {
 		// TODO Auto-generated method stub
-		return null;
+		SurveillanceCommand sc = surveillanceCommandRepository.findById(idCommand).get();
+		sc.setStateCommand(StateCommand.AVOIR);
+		sc.setStaterequest(false);
+		return surveillanceCommandRepository.save(sc);
 	}
 
 	@Override
-	public SurveillanceCommand responseRetourCommand(Long idCommand) {
+	public SurveillanceCommand responseRetourCommand(Long idCommand , String description , boolean avoir) {
 		// TODO Auto-generated method stub
-		return null;
+		SurveillanceCommand sc = surveillanceCommandRepository.findById(idCommand).get();
+		sc.setStateCommand(StateCommand.AVOIR);
+		sc.setStaterequest(true);
+		sc.setAvoir(avoir);
+		if(avoir=true)
+		{
+			AvoirClient(idCommand);
+			AvoirAgent(idCommand);
+		}
+		return surveillanceCommandRepository.save(sc);
 	}
+
+	@Override
+	public Map<SurveillanceOfficer,Double> AvoirClient(Long idCommand) {
+		// TODO Auto-generated method stub
+		SurveillanceCommand sc = surveillanceCommandRepository.findById(idCommand).get();
+		SurveillanceOfficer so = surveillanceCommandRepository.findOfficerOfCommand(idCommand);
+		Client c =sc.getClient();
+		Map<SurveillanceOfficer,Double> map = c.getAvoirs();
+		map.put(so, sc.getFinalPriceCommand());
+		c.setAvoirs(map);
+		clientRepository.save(c);
+		return map;
+	}
+
+	@Override
+	public Map<Client, Double> AvoirAgent(Long idCommand) {
+		// TODO Auto-generated method stub
+		SurveillanceCommand sc = surveillanceCommandRepository.findById(idCommand).get();
+		SurveillanceOfficer so = surveillanceCommandRepository.findOfficerOfCommand(idCommand);
+		Client c =sc.getClient();
+		Map<Client,Double> map = so.getAvoirs();
+		map.put(c, sc.getFinalPriceCommand());
+		so.setAvoirs(map);
+		surveillanceOfficerRepository.save(so);
+		return map;
+	}
+
+	
 
 
 	
