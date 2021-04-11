@@ -1,21 +1,13 @@
 package dari.service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
+
 import java.util.List;
-import java.util.Map;
-
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import dari.entity.Client;
 import dari.entity.Surveillance;
 import dari.entity.SurveillanceNotice;
-import dari.repository.ClientRepository;
 import dari.repository.SurveillanceNoticeRepository;
-import dari.repository.SurveillanceRepository;
+
 
 @Service
 public class SurveillanceNoticeServiceImpl implements ISurveillanceNoticeService{

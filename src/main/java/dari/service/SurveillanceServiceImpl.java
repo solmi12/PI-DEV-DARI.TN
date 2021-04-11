@@ -1,7 +1,6 @@
 package dari.service;
-import java.util.ArrayList;
+
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -71,7 +70,7 @@ public class SurveillanceServiceImpl implements ISurveillanceService{
 	public Surveillance deleteValueInMap(Long idSurveillance, Long key, Long value) {
 		// TODO Auto-generated method stub
 		Surveillance s = surveillanceRepository.findById(idSurveillance).get();
-		if (! searchValueInMap(idSurveillance,key,value)){
+		if (searchValueInMap(idSurveillance,key,value)){
 			Map<Long,Valeurs> map = s.getAvisClients();
 			Valeurs v = map.get(key);
 			v.getValeurs().remove(value);

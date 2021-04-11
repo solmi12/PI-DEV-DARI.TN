@@ -13,9 +13,9 @@ public interface ISurveillanceCommandService {
 	
 	//##################################################################################
 	
-	/*public String generateCodeCommande();
+	public String generateCodeCommande(); //:)
 	
-	public List<LigneCommand> detailsCommand(Long idCommand);
+	public List<LigneCommand> detailsCommand(Long idCommand); //:)
 	
 	public void removeCommand(Long idCommand);
 	
@@ -45,6 +45,6 @@ public interface ISurveillanceCommandService {
 	
 	public SurveillanceCommand requestRetourCommand(Long idCommand);
 	
-	public SurveillanceCommand responseRetourCommand(Long idCommand);*/
+	public SurveillanceCommand responseRetourCommand(Long idCommand);
 	
 }

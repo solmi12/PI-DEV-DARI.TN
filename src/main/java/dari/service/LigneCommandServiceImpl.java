@@ -3,7 +3,6 @@ package dari.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import dari.entity.LigneCommand;
-import dari.entity.Surveillance;
 import dari.repository.LigneCommandRepository;
 
 
@@ -13,10 +12,10 @@ public class LigneCommandServiceImpl implements ILigneCommandService{
 	@Autowired
 	LigneCommandRepository LigneCommandRepository;
 	
-	/*@Autowired
-	ISurveillanceService surveillanceService;*/
+	@Autowired
+	ISurveillanceService surveillanceService;
 
-	/*@Override
+	@Override
 	public LigneCommand addLigneCommand(Long idSurveillance, int quantity) {
 		// TODO Auto-generated method stub
 		LigneCommand lc = new LigneCommand(quantity,surveillanceService.retrieveSurveillance(idSurveillance));
@@ -56,7 +55,7 @@ public class LigneCommandServiceImpl implements ILigneCommandService{
 		ligne.setLignePrice(ligne.getQuantity()*ligne.getUnitPrice());
 		LigneCommandRepository.save(ligne);
 		return ligne;
-	}*/
+	}
 
 	
 

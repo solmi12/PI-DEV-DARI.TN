@@ -1,23 +1,20 @@
 package dari.repository;
 
 import java.util.List;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-
 import dari.entity.StateCommand;
-import dari.entity.Surveillance;
 import dari.entity.SurveillanceCommand;
 
 
 @Repository
 public interface SurveillanceCommandRepository extends JpaRepository<SurveillanceCommand, Long>{
 	
-	@Query(value="SELECT surveillance_officer.user_name FROM surveillance_officer "
-			+ "INNER JOIN surveillance ON (surveillance_officer.id_surveillance_officer=surveillance.surveillance_officer_id_surveillance_officer)"
-			+ "INNER JOIN ligne_command ON(surveillance.id_surveillance=ligne_command.id_surveillance)"
-			+ "WHERE ligne_command.id_ligne_command=?1",nativeQuery=true)
+	@Query("SELECT DISTINCT so.userName FROM SurveillanceOfficer so "
+			+ "JOIN so.Surveillances s "
+			+ "JOIN s.LigneCommands lc "
+			+ "WHERE lc.idLigneCommand=?1")
 	public String findProviderOfCommand(Long idLigneCommand);
 	
 	@Query(value="SELECT * FROM surveillance_command "

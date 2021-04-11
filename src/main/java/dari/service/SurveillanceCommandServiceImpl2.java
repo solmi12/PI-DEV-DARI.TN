@@ -27,7 +27,7 @@ public class SurveillanceCommandServiceImpl2 implements ISurveillanceCommandServ
 	@Autowired
 	LigneCommandRepository ligneCommandRepository;
 
-	/*@Override
+	@Override
 	public String generateCodeCommande() {
 		// TODO Auto-generated method stub
 		return UUID.randomUUID().toString().toUpperCase().substring(0, 18);
@@ -37,14 +37,13 @@ public class SurveillanceCommandServiceImpl2 implements ISurveillanceCommandServ
 	public void removeCommand(Long idCommand) {
 		// TODO Auto-generated method stub
 		surveillanceCommandRepository.deleteById(idCommand);
-		ligneCommandRepository.deleteLigneCommandByCommand(idCommand);
+		
 		
 	}
 	
 	@Override
 	public List<LigneCommand> detailsCommand(Long idCommand) {
 		// TODO Auto-generated method stub
-		
 		return surveillanceCommandRepository.findById(idCommand).get().getLigneCommands();
 	}
 	
@@ -71,17 +70,17 @@ public class SurveillanceCommandServiceImpl2 implements ISurveillanceCommandServ
 	public SurveillanceCommand demandeDevis(List<LigneCommand> lc, Long idClient) {
 		// TODO Auto-generated method stub
 		SurveillanceCommand sc = new SurveillanceCommand();
-		sc.setCodeCommande(generateCodeCommande());
-		sc.setDateCammand(new Date());
-		sc.setStateCommand(StateCommand.DEVIS);
-		sc.setStaterequest(false);
-		sc.setFournisseurCommand(surveillanceCommandRepository.findProviderOfCommand(lc.get(0).getIdLigneCommand()));
 		SurveillanceCommand x =  surveillanceCommandRepository.save(sc);
-
-		double pc=0;
+		x.setCodeCommande(generateCodeCommande());
+		x.setDateCammand(new Date());
+		x.setStateCommand(StateCommand.DEVIS);
+		x.setStaterequest(false);
+		x.setFournisseurCommand(surveillanceCommandRepository.findProviderOfCommand(lc.get(0).getIdLigneCommand()));
+        double pc=0;
 		for (LigneCommand ligneCommand : lc) {
-			ligneCommand.setSurveillanceCommand(x);
 			pc+=ligneCommand.getLignePrice();
+			ligneCommand.setSurveillanceCommand(sc);
+			ligneCommandRepository.save(ligneCommand);
 		}
 		x.setPriceCommand(pc);	
 		x.setFinalPriceCommand(pc);
@@ -151,7 +150,7 @@ public class SurveillanceCommandServiceImpl2 implements ISurveillanceCommandServ
 	public SurveillanceCommand responseRetourCommand(Long idCommand) {
 		// TODO Auto-generated method stub
 		return null;
-	}*/
+	}
 
 
 	

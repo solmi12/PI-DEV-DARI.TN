@@ -1,9 +1,6 @@
 package dari.entity;
 
 import java.io.Serializable;
-
-
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -85,7 +82,6 @@ public class LigneCommand implements Serializable{
 	public void setSurveillanceCommand(SurveillanceCommand surveillanceCommand) {
 		this.surveillanceCommand = surveillanceCommand;
 	}
-	
 	
 	public Surveillance getSurveillance() {
 		return surveillance;

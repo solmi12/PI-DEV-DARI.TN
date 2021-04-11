@@ -4,8 +4,6 @@ package dari.service;
 import java.util.List;
 import dari.entity.CategorySurveillance;
 import dari.entity.Surveillance;
-import dari.entity.SurveillanceOfficer;
-
 
 
 public interface ISurveillanceService {
