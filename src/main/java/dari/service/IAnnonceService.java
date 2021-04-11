@@ -9,7 +9,7 @@ import dari.entity.TypeTransaction;
 
 public interface IAnnonceService {
 	List<AnnonceImmobilier> retrieveAllAnnonces();
-	AnnonceImmobilier addAnnonce(AnnonceImmobilier annonce);
+	AnnonceImmobilier addAnnonce(long id_client,AnnonceImmobilier annonce);
 	AnnonceImmobilier retrieveAnnonce(long annonce_ref);
 	void deleteAnnonce(long annonce_ref);
 	AnnonceImmobilier updateAnnonce(AnnonceImmobilier annonce);
@@ -26,5 +26,4 @@ public interface IAnnonceService {
 	
 	
 	/*List<AnnonceImmobilier> retrieveRegionById(AnnonceRegion region);*/
-
 }

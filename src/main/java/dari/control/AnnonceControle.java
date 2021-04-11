@@ -39,15 +39,16 @@ public class AnnonceControle {
 		return annonceservice.retrieveAnnonce(id);
 		}
 	
-	@PostMapping("add-annonce")
+	@PostMapping("add-annonce/{id_client}")
 	@ResponseBody
-	public AnnonceImmobilier addAnnonce(@RequestBody AnnonceImmobilier annonce){
-		return annonceservice.addAnnonce(annonce);	}
+	public AnnonceImmobilier addAnnonce(@PathVariable("id_client")long id_client, @RequestBody AnnonceImmobilier annonce){
+		 
+		return annonceservice.addAnnonce(id_client,annonce);	}
 		
 	@PutMapping("update-annonce")
 	@ResponseBody
 	public AnnonceImmobilier updateAnnonce(@RequestBody AnnonceImmobilier annonce){
-		return annonceservice.addAnnonce(annonce);	}
+		return annonceservice.updateAnnonce(annonce);	}
 		
 	@DeleteMapping("delete-annonce/{id}")
 	@ResponseBody
@@ -114,5 +115,6 @@ public class AnnonceControle {
 				public long getStatByTypeTrans(@PathVariable("typeTrans")TypeTransaction typeTrans){
 					return annonceservice.StatByTypeTrans(typeTrans);
 					}
-
+	
+		
 }

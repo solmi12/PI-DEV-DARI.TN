@@ -10,16 +10,21 @@ import org.springframework.stereotype.Service;
 import dari.entity.AnnonceImmobilier;
 import dari.entity.AnnonceRegion;
 import dari.entity.AnnonceType;
+import dari.entity.Client;
 import dari.entity.TypeTransaction;
 import dari.repository.AnnonceRepository;
-
+import dari.repository.ClientRepository;
 import dari.service.IAnnonceService;
 
+
+
 @Service
-public class AnnonceServiceImp implements IAnnonceService{
+public class AnnonceServiceImpl implements IAnnonceService{
 	@Autowired
 	AnnonceRepository annonceRepository;
-	private static final Logger L =LogManager.getLogger(AnnonceServiceImp.class);
+	@Autowired
+	ClientRepository cr;
+	private static final Logger L =LogManager.getLogger(AnnonceServiceImpl.class);
 
 
 	@Override
@@ -34,8 +39,11 @@ public class AnnonceServiceImp implements IAnnonceService{
 	}
 
 	@Override
-	public AnnonceImmobilier addAnnonce(AnnonceImmobilier annonce) {
-		
+	public AnnonceImmobilier addAnnonce(long id_client,AnnonceImmobilier annonce) {
+		Client a = new Client();
+		Client c = (Client) cr.findById(id_client).get();
+		a.setIdClient(id_client);a.setAdresseEmail(c.getAdresseEmail());a.setTel(c.getTel());
+		annonce.setClient(a);
 		return annonceRepository.save(annonce);
 	}
 

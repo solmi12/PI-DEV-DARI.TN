@@ -2,7 +2,10 @@ package dari.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
+//import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -10,28 +13,32 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import dari.entity.AnnonceRegion;
-import dari.entity.AnnonceType;
-import dari.entity.TypeTransaction;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
+import dari.entity.Feedback;
 
 @Entity
-public class AnnonceImmobilier implements Serializable{
-	
+@Table(name="T_ANNONCES")
+//@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class,property="id")
+public class AnnonceImmobilier implements Serializable   {
+	/**
+	 * 
+	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="ANNONCE_REF")
 	private long annonce_ref;
-	
-	//@Column(name="CLIENT_ID")
-	//private long client_id;
-	
-	//@Column(name="CLIENT_NAME")
-	//private String nom_client;
 	
 	@Column(name="ANNONCE_TYPE_TRANS")
 	@Enumerated(EnumType.STRING)
@@ -65,9 +72,36 @@ public class AnnonceImmobilier implements Serializable{
 	
 	@Temporal(TemporalType.DATE)
 	private Date Date_Publication;
+	
+	/*@Column(name="CLIENT_ID")
+	private long client_id;
+	
+	@Column(name="CLIENT_TEL")
+	private String nom_tel;
+	
+	@Column(name="CLIENT_EMAIL")
+	private long client_email;*/
+
+
+	@ManyToOne
+	@JsonBackReference
+	private Client client;
+	
+	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy="annonce")
+	@JsonManagedReference
+	private List<Feedback> feedbacks;
 
 	public long getAnnonce_ref() {
 		return annonce_ref;
+	}
+
+	public Client getClient() {
+		return client;
+	}
+
+	public void setClient(Client client) {
+		this.client = client;
 	}
 
 	public void setAnnonce_ref(long annonce_ref) {
@@ -191,4 +225,37 @@ public class AnnonceImmobilier implements Serializable{
 		Date_Publication = date_Publication;
 	}
 
+	public AnnonceImmobilier(long annonce_ref, TypeTransaction annonce_type_trans, AnnonceType annonce_type,
+			long annonce_prix, AnnonceRegion annonce_region, int annonce_nbr_chambres, int annonce_nbr_salon,
+			int annonce_nbr_sbain, int annonce_superficie, String annonce_description, Date date_Publication,
+			List<Feedback> feedbacks) {
+		super();
+		this.annonce_ref = annonce_ref;
+		this.annonce_type_trans = annonce_type_trans;
+		this.annonce_type = annonce_type;
+		this.annonce_prix = annonce_prix;
+		this.annonce_region = annonce_region;
+		Annonce_nbr_chambres = annonce_nbr_chambres;
+		Annonce_nbr_salon = annonce_nbr_salon;
+		Annonce_nbr_sbain = annonce_nbr_sbain;
+		this.annonce_superficie = annonce_superficie;
+		Annonce_description = annonce_description;
+		Date_Publication = date_Publication;
+		
+		this.feedbacks = feedbacks;
+	}
+
+	public List<Feedback> getFeedbacks() {
+		return feedbacks;
+	}
+
+	public void setFeedbacks(Feedback feedback) {
+		//Feedback f = new Feedback() ;
+		//long a = feedback.getId();f.setId(a);
+		//String s = feedback.getCommentaire();f.setCommentaire(s);
+		this.feedbacks.add(feedback);
+	}
+	
+	//@ManyToOne
+	//Client client
 }
