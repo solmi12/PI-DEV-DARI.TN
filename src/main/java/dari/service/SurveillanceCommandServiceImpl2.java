@@ -1,8 +1,8 @@
 package dari.service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import dari.entity.Client;
 import dari.entity.LigneCommand;
 import dari.entity.StateCommand;
+import dari.entity.Surveillance;
 import dari.entity.SurveillanceCommand;
 import dari.entity.SurveillanceOfficer;
 import dari.repository.ClientRepository;
@@ -227,6 +228,75 @@ public class SurveillanceCommandServiceImpl2 implements ISurveillanceCommandServ
 		so.setAvoirs(map);
 		surveillanceOfficerRepository.save(so);	}
 		return map;
+	}
+
+	@Override
+	public Map<Surveillance, Integer> statistiquebyllike(Long idAgent) {
+		// TODO Auto-generated method stub
+		Map<Surveillance, Integer> map =new HashMap<>();
+		SurveillanceOfficer so = surveillanceOfficerRepository.findById(idAgent).get();
+		List<Surveillance> list = so.getSurveillances();
+		for (Surveillance s : list) {
+			map.put(s, s.getJaime());
+		}
+		return map;
+	}
+
+	@Override
+	public Map<Surveillance, Integer> statistiquebyDesike(Long idAgent) {
+		// TODO Auto-generated method stub
+		Map<Surveillance, Integer> map =new HashMap<>();
+		SurveillanceOfficer so = surveillanceOfficerRepository.findById(idAgent).get();
+		List<Surveillance> list = so.getSurveillances();
+		for (Surveillance s : list) {
+			map.put(s, s.getJaimeplus());
+		}
+		return map;
+	}
+
+	@Override
+	public Map<Surveillance, Integer> surveillanceVendre(Long idAgent) {
+		// TODO Auto-generated method stub
+		Map<Surveillance, Integer> map =new HashMap<>();
+		/*SurveillanceOfficer so = surveillanceOfficerRepository.findById(idAgent).get();
+		List<Surveillance> list = so.getSurveillances();
+		for (Surveillance s : list) {
+			map.put(s, surveillanceCommandRepository.statistiquebyStateOK(StateCommand.OK));
+		}*/
+		return map;
+	}
+
+	@Override
+	public Map<Surveillance, Integer> surveillanceRetour(Long idAgent) {
+		// TODO Auto-generated method stub
+		/*Map<Surveillance, Integer> map =new HashMap<>();
+		SurveillanceOfficer so = surveillanceOfficerRepository.findById(idAgent).get();
+		
+		List<String> codes = surveillanceCommandRepository.trouverCodeCommandeAgent(idAgent);
+		List<SurveillanceCommand> commands = new ArrayList<>();
+		for (String code : codes) {
+		commands.add(surveillanceCommandRepository.afficherCommandAgentByPara(code, StateCommand.AVOIR, true));
+		}
+		
+		List<Surveillance> list = so.getSurveillances();
+		for (Surveillance s : list) {
+			map.put(s,0);
+			for (SurveillanceCommand cmmd : commands) {
+				List<LigneCommand> ligne =cmmd.getLigneCommands();
+				for (LigneCommand lc : ligne) {
+					if(lc.getSurveillance().equals(s)){
+						map.put(s, surveillanceCommandRepository.statistiquebyStateAvoir(cmmd, true));
+					}
+				}
+			}
+		}*/
+		return null;
+	}
+
+	@Override
+	public Map<Date, Double> ventParMois(Long idAgent) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	

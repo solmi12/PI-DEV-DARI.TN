@@ -30,7 +30,7 @@ public class SurveillanceController {
 	@Autowired
 	SurveillanceRepository surveillance;
 	
-	@PostMapping("/add") 
+	@PostMapping("/addsur") 
 	@ResponseBody
 	public ResponseEntity<Object> test( ) {
 	// TODO Auto-generated method stub
@@ -167,6 +167,17 @@ public class SurveillanceController {
 	public ResponseEntity<Object> searchSurveillanceByCategory(@RequestParam(value="category") CategorySurveillance category ) {
 	try{
 	return new ResponseEntity<Object>(surveillanceService.searchSurveillanceByCategory(category), HttpStatus.OK);
+			}
+	catch(Exception e){
+	return new ResponseEntity<Object>(e.getMessage(),HttpStatus.EXPECTATION_FAILED);
+			}
+	}
+	
+	@GetMapping("/searchSurveillanceByCode/{idAgent}")
+	@ResponseBody
+	public ResponseEntity<Object> searchSurveillanceByCode(@RequestParam(value="code") String code , @PathVariable("idAgent") Long idAgent ) {
+	try{
+	return new ResponseEntity<Object>(surveillanceService.retriveSurveillanceByCode(code, idAgent), HttpStatus.OK);
 			}
 	catch(Exception e){
 	return new ResponseEntity<Object>(e.getMessage(),HttpStatus.EXPECTATION_FAILED);

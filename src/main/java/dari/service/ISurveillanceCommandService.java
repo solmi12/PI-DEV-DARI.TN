@@ -1,12 +1,14 @@
 package dari.service;
 
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import dari.entity.Client;
 import dari.entity.LigneCommand;
 import dari.entity.StateCommand;
+import dari.entity.Surveillance;
 import dari.entity.SurveillanceCommand;
 import dari.entity.SurveillanceOfficer;
 
@@ -55,5 +57,17 @@ public interface ISurveillanceCommandService {
 	public Map<SurveillanceOfficer, Double> AvoirClient(Long idCommand);
 	
 	public Map<Client, Double> AvoirAgent(Long idCommand);
+	
+	//####################################### Statistique ##############################################
+	
+	public Map<Surveillance,Integer> statistiquebyllike(Long idAgent);
+	
+	public Map<Surveillance,Integer> statistiquebyDesike(Long idAgent);
+	
+	public Map<Surveillance,Integer> surveillanceVendre(Long idAgent);
+	
+	public Map<Surveillance,Integer> surveillanceRetour(Long idAgent);
+	
+	public Map<Date ,Double> ventParMois(Long idAgent);
 	
 }

@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -21,7 +23,12 @@ import javax.persistence.Temporal;
 import javax.persistence.JoinColumn;
 
 import javax.persistence.TemporalType;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import dari.service.ISurveillanceService;
 
 @Entity
 public class Surveillance implements Serializable{
@@ -95,9 +102,11 @@ public class Surveillance implements Serializable{
 		this.categorySurveillance = categorySurveillance;
 		this.avisClients=new HashMap<>();
 	}
-
+	
 	public Surveillance() {
 		super();
+		this.dateAdd=new Date();
+		this.codeSurveillance=UUID.randomUUID().toString().toUpperCase().substring(0, 18);
 		this.avisClients=new HashMap<>();
 	}
 

@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import dari.entity.StateCommand;
+import dari.entity.Surveillance;
 import dari.entity.SurveillanceCommand;
 import dari.entity.SurveillanceOfficer;
 
@@ -42,5 +43,18 @@ public interface SurveillanceCommandRepository extends JpaRepository<Surveillanc
 			+ "JOIN lc.surveillanceCommand sc "
 			+ "WHERE sc.idCommand=?1")
 	public SurveillanceOfficer findOfficerOfCommand(Long idCommand);
+	
+	//###################################### statistique ######################################
+	
+	/*@Query("SELECT COUNT (lc.surveillance) FROM LigneCommand lc "
+			+ "JOIN lc.surveillanceCommand sc "
+			+ "WHERE lc.surveillanceCommand=?1")
+	public Integer statistiquebyStateOK(SurveillanceCommand command);
+	
+	@Query("SELECT COUNT (lc.surveillance) FROM LigneCommand lc "
+			+ "JOIN lc.surveillanceCommand sc "
+			+ "WHERE lc.surveillanceCommand=?1")
+	public Integer statistiquebyStateAvoir(SurveillanceCommand sc , boolean avoir);*/
+	
 	
 }

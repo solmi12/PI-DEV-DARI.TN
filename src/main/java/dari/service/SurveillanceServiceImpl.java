@@ -254,5 +254,17 @@ public class SurveillanceServiceImpl implements ISurveillanceService{
 		}
 	}
 
+	@Override
+	public Surveillance retriveSurveillanceByCode(String code, Long idAgent) {
+		// TODO Auto-generated method stub
+		Surveillance s = surveillanceRepository.findByCodeSurveillanceLike(code);
+		if(idAgent == s.getSurveillanceOfficer().getIdSurveillanceOfficer())
+		{
+			return s;
+		}
+		
+		return null;
+	}
+
 
 }

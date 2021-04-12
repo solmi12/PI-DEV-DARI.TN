@@ -23,6 +23,8 @@ public interface ISurveillanceService {
 	
 	public String deleteSurveillance(Long idSurveillance , Long idAgent); //supprimer surveillance :)
 	
+	public Surveillance retriveSurveillanceByCode(String code , Long idAgent);
+	
 	public Object updateSurveillance(String productName, String capteur , int resolution, int indiceProtection,
 	int porteeInfrarouge,CategorySurveillance categorySurveillance,double price, Long surveillanceOfficerId , Long surveillanceId); //modifier surveillance :)
 	

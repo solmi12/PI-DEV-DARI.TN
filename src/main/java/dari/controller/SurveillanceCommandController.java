@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import dari.entity.Client;
 import dari.entity.LigneCommand;
 import dari.entity.StateCommand;
+import dari.entity.Surveillance;
 import dari.entity.SurveillanceCommand;
 import dari.entity.SurveillanceOfficer;
 import dari.repository.ClientRepository;
@@ -119,9 +120,10 @@ public class SurveillanceCommandController {
 		
 		@PutMapping("/confirmeCommand/{idCommand}")
 		@ResponseBody
-		public ResponseEntity<Object> confirmeCommand(@PathVariable("idCommand") Long idCommand ,@RequestParam(value="description") String description ) {
+		public ResponseEntity<Object> confirmeCommand(@PathVariable("idCommand") Long idCommand) {
 		try{
-		return new ResponseEntity<Object>(surveillanceCommandService.responsePasseCommand(idCommand, description),HttpStatus.OK);
+			surveillanceCommandService.CommandConfirmer(idCommand);
+		return new ResponseEntity<Object>("commandeConfirmée",HttpStatus.OK);
 		}
 		catch (Exception e){
 		return new	ResponseEntity<>(e.getMessage() , HttpStatus.EXPECTATION_FAILED);
@@ -276,6 +278,32 @@ public class SurveillanceCommandController {
 		@ResponseBody
 		public Map<Client,Double> afficherAvoirConfirmerAgent(@PathVariable("idAgent") Long idAgent){
 			return sor.findById(idAgent).get().getAvoirs();
+		}
+		
+		//####################################### STATISTIQUE ###########################################
+		
+	/*	@GetMapping("/affichersatatisqueVendre/{idAgent}")
+		@ResponseBody
+		public Map<Surveillance, Integer> satatisqueVendre(@PathVariable("idAgent") Long idAgent){
+			return surveillanceCommandService.surveillanceVendre(idAgent);
+		}
+		
+		@GetMapping("/affichersatatisqueRetour/{idAgent}")
+		@ResponseBody
+		public Map<Surveillance, Integer> satatisqueRetour(@PathVariable("idAgent") Long idAgent){
+			return surveillanceCommandService.surveillanceRetour(idAgent);
+		}*/
+		
+		@GetMapping("/affichersatatisqueLike/{idAgent}")
+		@ResponseBody
+		public Map<Surveillance, Integer> satatisqueLike(@PathVariable("idAgent") Long idAgent){
+			return surveillanceCommandService.statistiquebyllike(idAgent);
+		}
+		
+		@GetMapping("/affichersatatisqueDesLike/{idAgent}")
+		@ResponseBody
+		public Map<Surveillance, Integer> satatisqueDesLike(@PathVariable("idAgent") Long idAgent){
+			return surveillanceCommandService.statistiquebyDesike(idAgent);
 		}
 
 }
