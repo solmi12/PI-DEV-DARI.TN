@@ -10784,3 +10784,8 @@ Caused by: java.lang.IllegalArgumentException: Not a managed type: class com.esp
 2021-04-12 18:43:51.481  INFO 17240 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
 2021-04-12 18:43:51.721  INFO 17240 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8087 (http) with context path '/SpringMVC'
 2021-04-12 18:43:51.727  INFO 17240 --- [main] com.esprit.spring.Application            : Started Application in 5.2 seconds (JVM running for 6.316)
+2021-04-12 18:58:24.569  INFO 17240 --- [RMI TCP Connection(2)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2021-04-12 18:58:24.943  INFO 17240 --- [RMI TCP Connection(2)-127.0.0.1] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2021-04-12 18:58:24.951  INFO 17240 --- [RMI TCP Connection(2)-127.0.0.1] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2021-04-12 18:58:24.951  INFO 17240 --- [RMI TCP Connection(2)-127.0.0.1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2021-04-12 18:58:24.975  INFO 17240 --- [RMI TCP Connection(2)-127.0.0.1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
