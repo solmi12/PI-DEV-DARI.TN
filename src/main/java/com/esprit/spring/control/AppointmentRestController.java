@@ -30,7 +30,7 @@ public class AppointmentRestController {
 			appointmentService.addAppointment(appointment);
 			return appointment;
 		}
-		//display all appointments
+		//display all appointments:
 		// http://localhost:8087/SpringMVC/servlet/display-all-app
 		@GetMapping("/display-all-app")
 		@ResponseBody

@@ -10763,3 +10763,24 @@ Caused by: java.lang.IllegalArgumentException: Not a managed type: class com.esp
 2021-04-12 17:16:32.634  INFO 6992 --- [RMI TCP Connection(2)-127.0.0.1] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
 2021-04-12 17:16:32.637  INFO 6992 --- [RMI TCP Connection(2)-127.0.0.1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
 2021-04-12 17:16:32.645  INFO 6992 --- [RMI TCP Connection(2)-127.0.0.1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2021-04-12 18:43:47.079  INFO 17240 --- [main] com.esprit.spring.Application            : Starting Application using Java 1.8.0_231 on DESKTOP-952SM1U with PID 17240 (C:\Users\Amine\Desktop\cours\Spring\projet\Dari.tn\target\classes started by Amine in C:\Users\Amine\Desktop\cours\Spring\projet\Dari.tn)
+2021-04-12 18:43:47.079  INFO 17240 --- [main] com.esprit.spring.Application            : No active profile set, falling back to default profiles: default
+2021-04-12 18:43:47.871  INFO 17240 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2021-04-12 18:43:47.951  INFO 17240 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 66 ms. Found 4 JPA repository interfaces.
+2021-04-12 18:43:48.479  INFO 17240 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8087 (http)
+2021-04-12 18:43:48.488  INFO 17240 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2021-04-12 18:43:48.488  INFO 17240 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.44]
+2021-04-12 18:43:48.717  INFO 17240 --- [main] o.a.c.c.C.[.[localhost].[/SpringMVC]     : Initializing Spring embedded WebApplicationContext
+2021-04-12 18:43:48.717  INFO 17240 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1566 ms
+2021-04-12 18:43:48.917  INFO 17240 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2021-04-12 18:43:48.965  INFO 17240 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.4.29.Final
+2021-04-12 18:43:49.093  INFO 17240 --- [main] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2021-04-12 18:43:49.197  INFO 17240 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2021-04-12 18:43:49.485  INFO 17240 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2021-04-12 18:43:49.502  INFO 17240 --- [main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL5Dialect
+2021-04-12 18:43:50.808  INFO 17240 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2021-04-12 18:43:50.824  INFO 17240 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-04-12 18:43:51.361  WARN 17240 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-04-12 18:43:51.481  INFO 17240 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2021-04-12 18:43:51.721  INFO 17240 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8087 (http) with context path '/SpringMVC'
+2021-04-12 18:43:51.727  INFO 17240 --- [main] com.esprit.spring.Application            : Started Application in 5.2 seconds (JVM running for 6.316)
